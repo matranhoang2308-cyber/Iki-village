@@ -37,8 +37,8 @@ export default function ApartmentList({ customer, onProceed, onBack }: Props) {
           <div className="flex-1 min-w-0 py-1 space-y-1">
             <p className="font-serif text-lg sm:text-2xl text-white font-normal truncate leading-snug">{customer.name}</p>
             {/* Mobile: phone only — email overflows and is not actionable here */}
-            <p className="font-sans text-xs text-white/70 pt-0.5 sm:hidden">{customer.phone}</p>
-            <p className="font-sans text-xs text-white/70 pt-0.5 hidden sm:block">{customer.phone} · {customer.email}</p>
+            <p className="font-sans text-sm text-white/80 pt-1.5 sm:hidden">{customer.phone}</p>
+            <p className="font-sans text-sm text-white/80 pt-1.5 hidden sm:block">{customer.phone} · {customer.email}</p>
           </div>
           <div className="text-right flex-shrink-0">
             <p className="font-sans text-[10px] text-white/50 uppercase tracking-wider mb-0.5">Tổng căn</p>

@@ -217,6 +217,41 @@ export default function App() {
     setStep("lookup")
   }
 
+  /**
+   * Reschedule: cancel the confirmed booking and send the customer back to the
+   * calendar. The old record is dropped and its N slots returned, so the
+   * customer never holds two bookings and no slot stays reserved for a booking
+   * that no longer exists.
+   */
+  const handleReschedule = useCallback(() => {
+    const { selectedDate, selectedStartIdx, customer, chain, bookingId } = booking
+    if (!selectedDate || selectedStartIdx === null || !customer || chain.length === 0 || !bookingId) return
+
+    const n = customer.apartments.length
+
+    // Release the slots the cancelled booking was holding.
+    setCalendarDays((days) => {
+      const dayIdx = days.findIndex((d) => d.date === selectedDate)
+      if (dayIdx === -1) return days
+      const newSlots = days[dayIdx].slots.map((s, i) =>
+        i >= selectedStartIdx && i < selectedStartIdx + n
+          ? { ...s, available: Math.min(s.capacity, s.available + 1) }
+          : s
+      )
+      return days.map((d, i) => (i === dayIdx ? { ...d, slots: newSlots } : d))
+    })
+
+    // Drop the old record so admin does not see a stale PENDING row.
+    setBookingRecords((records) => records.filter((r) => r.id !== bookingId))
+
+    // Keep the customer, clear the time selection, return to the calendar.
+    setBooking((b) => ({
+      ...EMPTY_BOOKING,
+      customer: b.customer,
+    }))
+    setStep("calendar")
+  }, [booking])
+
   // Admin status update handler
   const handleUpdateRecordStatus = (id: string, newStatus: "APPROVED" | "REJECTED") => {
     setBookingRecords((prev) =>
@@ -356,6 +391,7 @@ export default function App() {
               booking={booking}
               onHoldExpired={handleHoldExpired}
               onNewBooking={handleReset}
+              onReschedule={handleReschedule}
             />
           </div>
         )}

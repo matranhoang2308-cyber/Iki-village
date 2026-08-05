@@ -12,9 +12,11 @@ interface Props {
   booking: BookingState
   onHoldExpired?: () => void
   onNewBooking: () => void
+  /** Cancels this booking, releases its slots, and returns to the calendar. */
+  onReschedule: () => void
 }
 
-export default function BookingSuccess({ booking, onNewBooking }: Props) {
+export default function BookingSuccess({ booking, onNewBooking, onReschedule }: Props) {
   const { customer, selectedDate, selectedStartTime, selectedEndTime, chain, bookingId } = booking
   if (!customer || !selectedDate || !selectedStartTime || !selectedEndTime || !bookingId) return null
 
@@ -71,9 +73,20 @@ export default function BookingSuccess({ booking, onNewBooking }: Props) {
         </CardContent>
       </Card>
 
-      <Button variant="default" className="w-full h-12 rounded-xl bg-[#316817] hover:bg-[#275413] text-white font-semibold uppercase tracking-wider shadow-md" onClick={onNewBooking}>
-        Hoàn tất & Tra cứu mới
-      </Button>
+      <div className="space-y-3">
+        <Button variant="default" className="w-full h-12 rounded-xl bg-[#316817] hover:bg-[#275413] text-white font-semibold uppercase tracking-wider shadow-md" onClick={onNewBooking}>
+          Hoàn tất & Tra cứu mới
+        </Button>
+
+        <Button variant="outline" className="w-full h-12 rounded-xl border-[#316817] text-[#316817] hover:bg-[#F0F7EC] font-semibold uppercase tracking-wider" onClick={onReschedule}>
+          <CalendarCheck size={16} className="mr-2" />
+          Đổi lịch
+        </Button>
+
+        <p className="font-sans text-[11px] text-[#7A6E60] leading-relaxed">
+          Đổi lịch sẽ huỷ lịch hẹn <strong className="text-[#2C2820]">{bookingId}</strong> và trả lại khung giờ đã giữ.
+        </p>
+      </div>
     </div>
   )
 }
