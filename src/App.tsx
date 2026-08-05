@@ -5,6 +5,7 @@ import ApartmentList from "@/components/ApartmentList"
 import CalendarPicker from "@/components/CalendarPicker"
 import BookingConfirmation from "@/components/BookingConfirmation"
 import BookingSuccess from "@/components/BookingSuccess"
+import ExistingBooking from "@/components/ExistingBooking"
 import AdminBookingManagement from "@/components/AdminBookingManagement"
 import {
   Customer, BookingDay, TimeSlot,
@@ -372,6 +373,17 @@ export default function App() {
         {step === "lookup" && (
           <div className="flex-1 animate-[fadeIn_0.5s_ease]">
             <CustomerLookup onCustomerFound={handleCustomerFound} />
+          </div>
+        )}
+
+        {step === "existing" && booking.customer && booking.bookingId && (
+          <div className="animate-[fadeIn_0.4s_ease]">
+            <ExistingBooking
+              booking={booking}
+              status={bookingRecords.find((r) => r.id === booking.bookingId)?.status ?? "PENDING"}
+              onReschedule={handleReschedule}
+              onBack={handleReset}
+            />
           </div>
         )}
 
