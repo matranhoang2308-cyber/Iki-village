@@ -12,7 +12,7 @@ import {
 } from "@/data/mockData"
 import { cn } from "@/lib/utils"
 
-export type AppStep = "lookup" | "apartments" | "calendar" | "confirmation" | "success" | "admin"
+export type AppStep = "lookup" | "existing" | "apartments" | "calendar" | "confirmation" | "success" | "admin"
 export type SubmitStatus = "idle" | "checking" | "conflict" | "done"
 
 export interface SlotRef {
@@ -24,6 +24,8 @@ export interface BookingRecord {
   id: string
   customer: Customer
   date: string
+  /** Index of the chain's first slot — needed to release the slots on cancel. */
+  startIdx: number
   startTime: string
   endTime: string
   chain: TimeSlot[]
@@ -75,7 +77,29 @@ export default function App() {
 
   // ── Step handlers ──────────────────────────────────────────────────────────
 
+  /** A customer's live booking is any record not yet rejected. */
+  const findActiveRecord = (customer: Customer) =>
+    bookingRecords.find((r) => r.customer.phone === customer.phone && r.status !== "REJECTED")
+
   const handleCustomerFound = (customer: Customer) => {
+    const existing = findActiveRecord(customer)
+
+    if (existing) {
+      // Already booked — show that booking instead of starting a new one.
+      setBooking({
+        ...EMPTY_BOOKING,
+        customer,
+        selectedDate: existing.date,
+        selectedStartIdx: existing.startIdx,
+        selectedStartTime: existing.startTime,
+        selectedEndTime: existing.endTime,
+        chain: existing.chain,
+        bookingId: existing.id,
+      })
+      setStep("existing")
+      return
+    }
+
     setBooking((b) => ({ ...b, customer }))
     setStep("apartments")
   }
@@ -162,6 +186,7 @@ export default function App() {
           id: generatedId,
           customer,
           date: selectedDate,
+          startIdx: selectedStartIdx,
           startTime: selectedStartTime,
           endTime: selectedEndTime,
           chain,
