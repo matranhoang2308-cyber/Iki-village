@@ -286,6 +286,9 @@ export default function App() {
   }
 
   const isFullBleed = step === "lookup"
+  // "existing" and "admin" sit outside the 5-step booking flow, so the stepper
+  // and progress bar do not apply to them.
+  const showStepper = step !== "lookup" && step !== "admin" && step !== "existing"
 
   // Auto-advance to success when submit completes
   if (step === "confirmation" && booking.submitStatus === "done" && booking.bookingId) {
@@ -312,7 +315,7 @@ export default function App() {
             />
           </button>
 
-          {step !== "lookup" && step !== "admin" && (
+          {showStepper && (
             <nav className="hidden sm:flex items-center gap-1">
               {STEPS.map((s, i) => (
                 <div key={s.key} className="flex items-center">
@@ -340,7 +343,7 @@ export default function App() {
 
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Mobile: compact step pill so progress is visible on phones too */}
-            {step !== "lookup" && step !== "admin" && (
+            {showStepper && (
               <span className="sm:hidden font-sans text-[11px] font-semibold px-2.5 py-1.5 rounded-lg bg-[#1D400E]/60 text-[#E2BC7E] border border-[#E2BC7E]/40 backdrop-blur-sm whitespace-nowrap">
                 Bước {currentIndex + 1}/{STEPS.length}
               </span>
@@ -358,7 +361,7 @@ export default function App() {
           </div>
         </div>
 
-        {step !== "lookup" && step !== "admin" && (
+        {showStepper && (
           <div className="h-0.5 bg-[#F0EBE0]">
             <div className="h-full bg-gradient-to-r from-[#316817] to-[#529838] transition-all duration-500"
               style={{ width: `${(currentIndex / (STEPS.length - 1)) * 100}%` }} />

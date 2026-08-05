@@ -264,7 +264,7 @@ export default function CalendarPicker({ customer, calendarDays, onTimeSelected,
               </button>
               <div className="text-center">
                 <p className="font-serif text-base font-semibold text-[#E2BC7E] leading-none">{VI_MONTH_NAMES[viewMonth.month]}</p>
-                <p className="font-sans text-xs text-white/70 mt-1 tracking-wider">{viewMonth.year}</p>
+                <p className="font-sans text-sm text-white/70 mt-1.5 tracking-wider">{viewMonth.year}</p>
               </div>
               <button onClick={handleNextMonth} className="w-7 h-7 flex items-center justify-center rounded-lg text-white/70 hover:text-[#E2BC7E] hover:bg-white/10 transition-colors">
                 <ChevronRight size={16} />
