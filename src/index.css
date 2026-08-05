@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  /* Green scale — primary #316817 */
+  --color-green-50:  #F0F7EC;
+  --color-green-100: #D5EACB;
+  --color-green-200: #AACF97;
+  --color-green-300: #7AB463;
+  --color-green-400: #529838;
+  --color-green-500: #316817;
+  --color-green-600: #275413;
+  --color-green-700: #1D400E;
+  --color-green-800: #122B09;
+  --color-green-900: #081505;
+
+  /* Gold scale — secondary #B8965A */
+  --color-gold-50:  #FDF8F0;
+  --color-gold-100: #F7EBDA;
+  --color-gold-200: #EDD4AC;
+  --color-gold-300: #E2BC7E;
+  --color-gold-400: #CDA85A;
+  --color-gold-500: #B8965A;
+  --color-gold-600: #9A7A44;
+  --color-gold-700: #7C5E30;
+  --color-gold-800: #5E431F;
+  --color-gold-900: #3D2B10;
+
+  /* Neutrals */
+  --color-cream:          #F5F0E8;
+  --color-ivory:          #FAF7F2;
+  --color-charcoal:       #2C2820;
+  --color-charcoal-mid:   #4A4035;
+  --color-charcoal-light: #7A6E60;
+  --color-muted:          #9A8E80;
+  --color-border:         #E0D8CC;
+  --color-border-light:   #E8E0D4;
+
+  /* Status */
+  --color-error:          #C4714A;
+
+  --font-serif: 'Pacifico', 'Pacific Standard', cursive, serif;
+  --font-sans:  'Myriad Pro', 'Myriad standard', 'Myriad', 'Outfit', system-ui, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+body {
+  font-family: 'Myriad Pro', 'Myriad standard', 'Myriad', 'Outfit', system-ui, sans-serif;
+  background-color: #F5F0E8;
+  color: #2C2820;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #316817 40; border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: #316817 80; }
+
+.font-serif { font-family: 'Pacifico', 'Pacific Standard', cursive, serif; }
+.font-sans  { font-family: 'Myriad Pro', 'Myriad standard', 'Myriad', 'Outfit', system-ui, sans-serif; }
+
+/* Animations */
+@keyframes fadeIn  { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Bottom-sheet entrance: travels the full height of the panel, not a nudge. */
+@keyframes sheetUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+.sheet-panel   { animation: sheetUp 0.25s cubic-bezier(0.32, 0.72, 0, 1); }
+.sheet-overlay { animation: sheetFade 0.2s ease; }
+@keyframes sheetFade { from { opacity: 0; } to { opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .sheet-panel, .sheet-overlay { animation: none; }
+}

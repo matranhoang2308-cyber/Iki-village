@@ -1,0 +1,10 @@
+{
+  "description": "Effortlessly book apartments by searching customer info, selecting available time slots, and securing reservations, all within a streamlined interface.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
