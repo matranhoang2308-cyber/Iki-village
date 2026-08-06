@@ -169,6 +169,28 @@ body {
 .font-cond  { font-family: 'Myriad Pro Condensed', 'Segoe UI', sans-serif; }
 .font-wide  { font-family: 'Myriad Pro', 'Segoe UI', system-ui, sans-serif; }
 
+/* Optical centring for icon + text rows.
+   Myriad Pro leaves 76/1000em above the cap height but 250/1000em below the
+   baseline. `flex items-center` centres that *box*, so caps-only labels land
+   ~0.087em low next to an icon — visible as the icon "floating" above the
+   text. Trimming the half-leading with negative margins makes the box hug the
+   glyphs, so centring the box centres what you actually see.
+   Apply to the <span> holding the label, not to the flex container. */
+.optical-center {
+  display: block;
+  line-height: 1;
+}
+.optical-center::before,
+.optical-center::after {
+  content: "";
+  display: block;
+  height: 0;
+  width: 0;
+}
+/* (750 - 674)/1000 above caps; 250/1000 below baseline */
+.optical-center::before { margin-top: -0.076em; }
+.optical-center::after  { margin-bottom: -0.25em; }
+
 /* Animations */
 @keyframes fadeIn  { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes slideUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }

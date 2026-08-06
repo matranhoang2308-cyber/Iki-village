@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react"
+import { Check } from "lucide-react"
 import { Separator } from "@/components/ui/separator"
 import CustomerLookup from "@/components/CustomerLookup"
 import ApartmentList from "@/components/ApartmentList"
@@ -321,15 +322,18 @@ export default function App() {
                 <div key={s.key} className="flex items-center">
                   <div className="flex items-center gap-1.5">
                     <div className={cn(
-                      "w-5 h-5 rounded-full flex items-center justify-center font-sans font-medium transition-all duration-300 text-[9px]",
+                      "w-6 h-6 rounded-full flex items-center justify-center font-sans font-semibold transition-all duration-300 text-[11px]",
                       i < currentIndex  ? "bg-[#316817] text-[#FAF7F2]"
                       : i === currentIndex ? "bg-[#275413] text-[#FAF7F2] ring-2 ring-[#AACF97]/50"
                                           : "border border-[#D0C8BC] text-[#A89C8E]"
                     )}>
-                      {i < currentIndex ? "✓" : i + 1}
+                      {/* SVG rather than "✓": neither Myriad Pro nor Pacific
+                          Standard carries U+2713, so the character fell back
+                          to a system font and sat off-centre in the circle. */}
+                      {i < currentIndex ? <Check size={13} strokeWidth={3} aria-label="đã xong" /> : i + 1}
                     </div>
-                    <span className={cn("font-sans text-[10px] tracking-wide hidden md:block",
-                      i === currentIndex ? "text-[#2C2820] font-medium" : "text-[#A89C8E]")}>
+                    <span className={cn("font-sans text-xs tracking-wide hidden md:block",
+                      i === currentIndex ? "text-[#2C2820] font-semibold" : "text-[#6B5F51]")}>
                       {s.label}
                     </span>
                   </div>
@@ -343,8 +347,11 @@ export default function App() {
 
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Mobile: compact step pill so progress is visible on phones too */}
+            {/* Visible below md, not below sm: between 640–768px the stepper
+                shows bare numbered circles with no labels, so the pill is the
+                only thing naming the current step. */}
             {showStepper && (
-              <span className="sm:hidden font-sans text-[11px] font-semibold px-2.5 py-1.5 rounded-lg bg-[#F0F7EC] text-[#316817] border border-[#AACF97] whitespace-nowrap">
+              <span className="md:hidden font-sans text-xs font-semibold px-2.5 py-1.5 rounded-lg bg-[#F0F7EC] text-[#316817] border border-[#AACF97] whitespace-nowrap">
                 Bước {currentIndex + 1}/{STEPS.length}
               </span>
             )}
@@ -450,9 +457,9 @@ export default function App() {
       {step !== "lookup" && (
         <footer className="border-t border-[#E0D8CC] py-4 px-5 mt-8 hidden sm:block">
           <div className="max-w-5xl mx-auto flex items-center justify-between">
-            <p className="font-sans text-[10px] text-[#B8B0A5] tracking-wide">© 2025 IKI Village. All rights reserved.</p>
+            <p className="font-sans text-xs text-[#6B5F51] tracking-wide">© 2025 IKI Village. All rights reserved.</p>
             <Separator orientation="vertical" className="h-3 mx-3" />
-            <p className="font-sans text-[10px] text-[#B8B0A5]">Hệ thống đặt lịch bàn giao căn hộ</p>
+            <p className="font-sans text-xs text-[#6B5F51]">Hệ thống đặt lịch bàn giao căn hộ</p>
           </div>
         </footer>
       )}

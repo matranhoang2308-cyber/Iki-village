@@ -59,22 +59,22 @@ export default function ExistingBooking({ booking, status, onReschedule, onBack 
       <Card className="text-left mb-6 rounded-2xl border-[#E0D8CC] overflow-hidden shadow-sm">
         <div className="p-4 bg-gradient-to-r from-[#1D400E] to-[#316817] text-white flex items-center justify-between gap-3">
           <div className="min-w-0">
-            <p className="font-sans text-[10px] text-white/60 uppercase tracking-widest">Mã đặt lịch</p>
+            <p className="font-sans text-xs text-white/85 uppercase tracking-widest">Mã đặt lịch</p>
             <p className="font-serif text-xl font-bold truncate">{bookingId}</p>
           </div>
           <Badge variant="gold" className="flex-shrink-0">{status}</Badge>
         </div>
         <CardContent className="p-5 space-y-3">
-          <div className="flex justify-between items-baseline gap-3 text-xs font-sans">
+          <div className="flex justify-between items-baseline gap-3 text-sm font-sans">
             <span className="text-[#7A6E60] flex-shrink-0">Khách hàng:</span>
             <span className="font-semibold text-[#2C2820] text-right">{customer.name}</span>
           </div>
           <Separator />
-          <div className="flex justify-between items-baseline gap-3 text-xs font-sans">
+          <div className="flex justify-between items-baseline gap-3 text-sm font-sans">
             <span className="text-[#7A6E60] flex-shrink-0">Ngày đặt lịch:</span>
             <span className="font-medium text-[#2C2820] text-right">{dateLabel}</span>
           </div>
-          <div className="flex justify-between items-baseline gap-3 text-xs font-sans">
+          <div className="flex justify-between items-baseline gap-3 text-sm font-sans">
             <span className="text-[#7A6E60] flex-shrink-0">Khung giờ:</span>
             <span className="font-semibold text-[#316817] text-right">
               {selectedStartTime} – {selectedEndTime} ({n * 45} phút)
@@ -82,7 +82,7 @@ export default function ExistingBooking({ booking, status, onReschedule, onBack 
           </div>
           <Separator />
           <div>
-            <p className="font-sans text-[10px] uppercase text-[#9A8E80] mb-1.5 font-semibold">Căn hộ</p>
+            <p className="font-sans text-xs uppercase text-[#6B5F51] mb-1.5 font-semibold">Căn hộ</p>
             <div className="flex flex-wrap gap-1.5">
               {customer.apartments.map((apt) => (
                 <Badge key={apt.id} variant="default" className="text-xs">{apt.code}</Badge>
@@ -95,7 +95,7 @@ export default function ExistingBooking({ booking, status, onReschedule, onBack 
       {!canReschedule && (
         <div className="flex items-start gap-2.5 p-3.5 rounded-xl border border-[#E8D9A8] bg-[#FDF8E8] mb-4">
           <Info size={16} className="text-[#9A7B24] mt-0.5 flex-shrink-0" />
-          <p className="font-sans text-[11px] text-[#7A6E60] leading-relaxed">
+          <p className="font-sans text-[13px] text-[#6B5F51] leading-relaxed">
             Lịch hẹn đã được xác duyệt nên không thể tự đổi trực tuyến. Vui lòng gọi{" "}
             <a href="tel:19001234" className="text-[#B8965A] font-semibold">1900 1234</a> để được hỗ trợ.
           </p>
@@ -108,15 +108,15 @@ export default function ExistingBooking({ booking, status, onReschedule, onBack 
           <Button variant="default" onClick={onReschedule}
             className="w-full h-12 rounded-xl bg-[#316817] hover:bg-[#1C3E0C] text-white font-semibold uppercase tracking-wider shadow-md flex items-center justify-center gap-2">
             <CalendarCheck size={16} className="shrink-0" />
-            <span className="leading-none">Đổi lịch</span>
+            <span>Đổi lịch</span>
           </Button>
         )}
         <Button variant="outline" onClick={onBack} className="w-full h-12 rounded-xl font-semibold uppercase tracking-wider flex items-center justify-center gap-2">
           <ArrowLeft size={16} className="shrink-0" />
-          <span className="leading-none">Tra cứu số khác</span>
+          <span>Tra cứu số khác</span>
         </Button>
         {canReschedule && (
-          <p className="font-sans text-[11px] text-[#7A6E60] leading-relaxed text-center">
+          <p className="font-sans text-[13px] text-[#6B5F51] leading-relaxed text-center">
             Đổi lịch sẽ huỷ lịch hẹn <strong className="text-[#2C2820]">{bookingId}</strong> và trả lại khung giờ đã giữ.
           </p>
         )}
@@ -132,7 +132,7 @@ export default function ExistingBooking({ booking, status, onReschedule, onBack 
           <Button variant="default" onClick={onReschedule}
             className="flex-1 rounded-xl h-12 bg-[#316817] hover:bg-[#1C3E0C] text-white font-semibold uppercase tracking-wider shadow-md flex items-center justify-center gap-2">
             <CalendarCheck size={16} className="shrink-0" />
-            <span className="leading-none">Đổi lịch</span>
+            <span>Đổi lịch</span>
           </Button>
         ) : (
           <Button variant="outline" asChild className="flex-1 rounded-xl h-12 font-semibold uppercase tracking-wider flex items-center justify-center gap-2">

@@ -33,8 +33,8 @@ export default function AdminBookingManagement({ records, onUpdateStatus, onBack
     <div className="max-w-5xl mx-auto py-6">
       {/* Header */}
       <div className="flex items-start justify-between mb-8 gap-4 flex-wrap">
-        <div>
-          <p className="font-sans text-[10px] tracking-[0.18em] uppercase text-[#316817] mb-1">
+        <div className="space-y-1">
+          <p className="font-sans text-xs tracking-[0.18em] uppercase text-[#316817] font-semibold leading-none">
             Bảng điều khiển Quản trị viên
           </p>
           <h2 className="font-serif text-3xl font-medium text-[#2C2820]">
@@ -51,7 +51,7 @@ export default function AdminBookingManagement({ records, onUpdateStatus, onBack
         <Card className="bg-[#FAF7F2] border-[#E0D8CC] rounded-xl">
           <CardContent className="p-4 flex items-center justify-between">
             <div>
-              <p className="font-sans text-[10px] text-[#9A8E80] uppercase tracking-wider">Tổng lịch</p>
+              <p className="font-sans text-xs text-[#6B5F51] uppercase tracking-wider">Tổng lịch</p>
               <p className="font-serif text-2xl font-bold text-[#2C2820]">{records.length}</p>
             </div>
           </CardContent>
@@ -68,7 +68,7 @@ export default function AdminBookingManagement({ records, onUpdateStatus, onBack
                 <p className="font-sans text-xs text-[#7A6E60]">{record.date} ({record.startTime} – {record.endTime})</p>
               </div>
               <div className="flex items-center gap-2">
-                <Badge variant={record.status === "APPROVED" ? "default" : record.status === "REJECTED" ? "destructive" : "pending"}>
+                <Badge variant={record.status === "APPROVED" ? "success" : record.status === "REJECTED" ? "muted" : "pending"}>
                   {record.status}
                 </Badge>
                 {record.status === "PENDING" && (

@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react"
+import { Check } from "lucide-react"
 
 interface Props {
   totalSeconds?: number          // e.g. 300 for 5 minutes
@@ -38,8 +39,8 @@ function FlipUnit({ value, label, bare }: { value: number; label: string; bare?:
       <span
         className={
           bare
-            ? "mt-1.5 font-sans text-[10px] font-medium uppercase tracking-widest text-[#7A6E60] leading-none"
-            : "mt-2 font-sans text-[10px] font-medium uppercase tracking-widest text-[#E2BC7E] leading-none"
+            ? "mt-1.5 font-sans text-xs font-medium uppercase tracking-widest text-[#6B5F51] leading-none"
+            : "mt-2 font-sans text-xs font-medium uppercase tracking-widest text-[#E2BC7E] leading-none"
         }
       >
         {label}
@@ -97,9 +98,12 @@ export default function CountdownTimer({ totalSeconds, durationSeconds, onExpire
   const progress = initialSeconds > 0 ? secondsLeft / initialSeconds : 0
   const pct      = Math.min(100, Math.max(0, Math.round(progress * 100)))
 
+  /* The expiry marker is an SVG: no bundled font carries U+2713, so a literal
+     "✓" fell back to a system face and sat off the text baseline. The emoji is
+     fine as-is — it always renders from the system emoji font. */
   const milestone =
-    secondsLeft <= 0   ? { icon: "✓", text: "Hết thời gian giữ chỗ", color: "#C4714A", bg: "rgba(196,113,74,0.15)" }
-    : secondsLeft <= 60  ? { icon: "🔥", text: "Còn dưới 1 phút!", color: "#CDA85A", bg: "rgba(205,168,90,0.15)" }
+    secondsLeft <= 0   ? { icon: <Check size={14} strokeWidth={3} className="shrink-0" />, text: "Hết thời gian giữ chỗ", color: "#C4714A", bg: "rgba(196,113,74,0.15)" }
+    : secondsLeft <= 60  ? { icon: <span aria-hidden="true">🔥</span>, text: "Còn dưới 1 phút!", color: "#CDA85A", bg: "rgba(205,168,90,0.15)" }
     : null
 
   const barColor = secondsLeft > 120 ? "#316817" : secondsLeft > 60 ? "#B8965A" : "#C4714A"
@@ -131,8 +135,9 @@ export default function CountdownTimer({ totalSeconds, durationSeconds, onExpire
       <div>
         <div className="flex items-center justify-center">{units}</div>
         {milestone && (
-          <p className="mt-3 text-center text-xs font-sans font-medium" style={{ color: milestone.color }}>
-            {milestone.icon} {milestone.text}
+          <p className="mt-3 flex items-center justify-center gap-1.5 text-xs font-sans font-medium" style={{ color: milestone.color }}>
+            {milestone.icon}
+            <span>{milestone.text}</span>
           </p>
         )}
       </div>
@@ -143,7 +148,7 @@ export default function CountdownTimer({ totalSeconds, durationSeconds, onExpire
     <div className="w-full bg-gradient-to-br from-[#081505] via-[#122B09] to-[#081505] border border-[#316817]/40 rounded-2xl p-4 shadow-xl text-white">
       {/* Label */}
       <div className="text-center mb-3">
-        <p className="font-sans text-[10px] font-semibold tracking-[0.18em] uppercase text-[#E2BC7E]/90">
+        <p className="font-sans text-xs font-semibold tracking-[0.18em] uppercase text-[#E2BC7E]">
           Thời gian giữ chỗ còn lại
         </p>
       </div>
@@ -153,9 +158,9 @@ export default function CountdownTimer({ totalSeconds, durationSeconds, onExpire
 
       {/* Progress */}
       <div className="space-y-1.5">
-        <div className="flex justify-between items-center text-[10px] font-sans text-white/60">
+        <div className="flex justify-between items-center text-xs font-sans text-white/80">
           <span className="uppercase tracking-wider">Tiến trình giữ chỗ</span>
-          <span className="font-semibold text-white/90">{pct}%</span>
+          <span className="font-semibold text-white">{pct}%</span>
         </div>
         <div className="h-2 w-full bg-white/10 rounded-full overflow-hidden">
           <div
@@ -167,7 +172,7 @@ export default function CountdownTimer({ totalSeconds, durationSeconds, onExpire
 
       {milestone && (
         <div className="mt-3 py-1.5 px-3 rounded-lg flex items-center gap-2 text-xs font-sans" style={{ background: milestone.bg, color: milestone.color }}>
-          <span>{milestone.icon}</span>
+          {milestone.icon}
           <span className="font-medium">{milestone.text}</span>
         </div>
       )}

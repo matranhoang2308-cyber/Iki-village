@@ -55,39 +55,34 @@ function SlotRow({
         aria-disabled={!isValidStart}
         className={cn(
           "flex items-center justify-between px-3.5 py-3.5 sm:py-2.5 min-h-[52px] sm:min-h-0 rounded-xl border transition-all duration-150 text-xs font-sans",
-          isSelected
-            ? "bg-[#316817] border-[#316817] text-white shadow-md font-semibold cursor-pointer"
-            : role === "in-chain"
-              ? "bg-[#EAF3E7] border-[#AACF97] text-[#275413] cursor-pointer font-medium"
-              : role === "hovered-chain"
-                ? "bg-[#F0F7EC] border-[#AACF97] text-[#275413] cursor-pointer"
-                : isValidStart
-                  ? "bg-white border-[#E0D8CC] text-[#2C2820] hover:border-[#316817] hover:bg-[#F0F7EC] cursor-pointer"
-                  // Not a legal start — disabled, whether it is full itself or
-                  // merely part of a chain that is blocked elsewhere.
-                  : "bg-[#FAF7F2] border-[#E8E0D4] text-[#C4BDBA] cursor-not-allowed opacity-60"
+          isSelected || role === "in-chain" || role === "hovered-chain"
+            ? "bg-[#F0F7EC] border-[#AACF97] text-[#275413] font-semibold cursor-pointer shadow-sm"
+            : isValidStart
+              ? "bg-white border-[#E0D8CC] text-[#2C2820] hover:border-[#316817] hover:bg-[#F0F7EC] cursor-pointer"
+              // Not a legal start — disabled
+              : "bg-[#FAF7F2] border-[#E8E0D4] text-[#8A7F72] cursor-not-allowed"
         )}
       >
         <div className="flex items-center gap-2.5">
-          <Clock size={14} className={isSelected ? "text-[#E2BC7E]" : "text-[#316817]"} />
-          <span className="font-serif text-sm font-medium">
+          <Clock size={14} className="text-[#316817]" />
+          <span className="font-serif text-sm font-medium leading-normal">
             {slot.startTime} – {slot.endTime}
           </span>
         </div>
         <div className="flex items-center gap-2.5">
-          <span className={cn("text-[10px] font-sans tabular-nums",
-            isSelected ? "text-white/70" : slot.available === 0 ? "text-[#C4BDBA]" : "text-[#7A6E60]")}>
+          {/* Availability is the decisive fact on this row */}
+          <span className={cn("text-sm font-sans tabular-nums font-medium",
+            slot.available === 0 ? "text-[#A3512B]" : "text-[#275413]")}>
             {slot.available}/{slot.capacity} trống
           </span>
           {isInChain
-            ? <span className={cn("text-[10px] font-bold whitespace-nowrap",
-                isSelected ? "text-[#E2BC7E]" : "text-[#316817]")}>
+            ? <span className="text-sm font-bold whitespace-nowrap text-[#316817]">
                 Khung {chainIdx + 1}/{totalN}
               </span>
             : slot.available === 0
-              ? <span className="text-[10px] font-sans text-[#C4BDBA] whitespace-nowrap">Hết slot</span>
+              ? <span className="text-sm font-sans font-medium text-[#A3512B] whitespace-nowrap">Hết chỗ</span>
               : !canStart
-                ? <span className="text-[10px] font-sans text-[#9A8E80] whitespace-nowrap">Không đủ {totalN} khung</span>
+                ? <span className="text-sm font-sans text-[#6B5F51] whitespace-nowrap">Không đủ {totalN} khung</span>
                 : null}
         </div>
       </div>
@@ -235,9 +230,9 @@ export default function CalendarPicker({ customer, calendarDays, onTimeSelected,
     <div className="max-w-5xl mx-auto py-6 pb-28 sm:pb-6">
       {/* Header */}
       <div className="flex items-start justify-between mb-6 sm:mb-8 gap-4 flex-wrap">
-        <div className="space-y-2 sm:space-y-3">
-          <p className="font-sans text-xs tracking-[0.18em] uppercase text-[#316817] font-semibold">Bước 3 — Lịch hẹn</p>
-          <h2 className="font-serif text-2xl sm:text-4xl font-normal text-[#2C2820] leading-snug py-1">Chọn ngày &amp; giờ</h2>
+        <div className="space-y-1">
+          <p className="font-sans text-xs tracking-[0.18em] uppercase text-[#316817] font-semibold leading-none">Bước 3 — Lịch hẹn</p>
+          <h2 className="font-serif text-2xl sm:text-4xl font-normal text-[#2C2820] leading-snug">Chọn ngày &amp; giờ</h2>
           <p className="font-sans text-sm sm:text-base text-[#7A6E60] leading-relaxed pt-1">
             Quý khách có <strong className="text-[#316817]">{n} căn</strong> — cần{" "}
             <strong className="text-[#316817]">{n} khung 45 phút liên tiếp</strong>.
@@ -251,7 +246,7 @@ export default function CalendarPicker({ customer, calendarDays, onTimeSelected,
         <div className="lg:col-span-2">
           <div className="flex items-center gap-2 mb-3">
             <CalendarDays size={14} className="text-[#316817]" />
-            <p className="font-sans text-xs font-semibold tracking-[0.12em] uppercase text-[#7A6E60]">1. Chọn ngày</p>
+            <p className="font-sans text-xs font-semibold tracking-[0.12em] uppercase text-[#7A6E60] leading-none">1. Chọn ngày</p>
           </div>
 
           <div className="border border-[#E0D8CC] bg-[#FAF7F2] rounded-2xl overflow-hidden shadow-sm">
@@ -264,7 +259,7 @@ export default function CalendarPicker({ customer, calendarDays, onTimeSelected,
               </button>
               <div className="text-center">
                 <p className="font-serif text-base font-semibold text-[#E2BC7E] leading-none">{VI_MONTH_NAMES[viewMonth.month]}</p>
-                <p className="font-sans text-[15px] text-white/70 mt-[7px] tracking-wider">{viewMonth.year}</p>
+                <p className="font-sans text-[15px] text-white/70 mt-[5px] tracking-wider">{viewMonth.year}</p>
               </div>
               <button onClick={handleNextMonth} className="w-7 h-7 flex items-center justify-center rounded-lg text-white/70 hover:text-[#E2BC7E] hover:bg-white/10 transition-colors">
                 <ChevronRight size={16} />
@@ -273,7 +268,7 @@ export default function CalendarPicker({ customer, calendarDays, onTimeSelected,
 
             <div className="grid grid-cols-7 border-b border-[#E0D8CC]">
               {DOW_HEADERS.map((h) => (
-                <div key={h} className="py-2 text-center font-sans text-[10px] font-semibold tracking-wider uppercase text-[#9A8E80]">
+                <div key={h} className="py-2 text-center font-sans text-xs font-semibold tracking-wider uppercase text-[#6B5F51]">
                   {h}
                 </div>
               ))}
@@ -298,15 +293,17 @@ export default function CalendarPicker({ customer, calendarDays, onTimeSelected,
                 return (
                   <button key={dateStr} disabled={!hasSlots} onClick={() => hasSlots && handleSelectDate(dateStr)}
                     className={cn(
-                      "relative flex flex-col items-center justify-center py-2 border-r border-b border-[#F0EAE0] transition-all duration-150 min-h-[52px] sm:min-h-[48px]",
-                      isSelected ? "bg-[#316817] text-white" : hasSlots ? "hover:bg-[#F0F7EC] cursor-pointer text-[#2C2820]" : "bg-[#FAF7F2] text-[#C4BDBA] cursor-not-allowed"
+                      // Desktop cells grew to fit a legible 12px "N suất"
+                      // under the date without cramping.
+                      "relative flex flex-col items-center justify-center py-2 border-r border-b border-[#F0EAE0] transition-all duration-150 min-h-[52px] sm:min-h-[56px]",
+                      isSelected ? "bg-[#316817] text-white" : hasSlots ? "hover:bg-[#F0F7EC] cursor-pointer text-[#2C2820]" : "bg-[#FAF7F2] text-[#8A7F72] cursor-not-allowed"
                     )}>
                     <span className={cn("font-serif text-base sm:text-sm leading-none font-medium", isSelected ? "text-[#E2BC7E]" : isToday ? "text-[#316817] font-bold" : "")}>{dayNum}</span>
                     {hasSlots && (
                       <>
                         {/* Mobile: a dot reads better than 9px text at this cell size */}
                         <span className={cn("sm:hidden w-1.5 h-1.5 rounded-full mt-1", isSelected ? "bg-[#E2BC7E]" : "bg-[#316817]")} />
-                        <span className={cn("hidden sm:block text-[9px] font-sans mt-0.5", isSelected ? "text-[#E2BC7E]" : "text-[#316817] font-medium")}>{chains} suất</span>
+                        <span className={cn("hidden sm:block text-xs font-sans mt-1 font-medium", isSelected ? "text-[#E2BC7E]" : "text-[#275413]")}>{chains} suất</span>
                       </>
                     )}
                   </button>
@@ -320,7 +317,7 @@ export default function CalendarPicker({ customer, calendarDays, onTimeSelected,
         <div className="hidden lg:block lg:col-span-3">
           <div className="flex items-center gap-2 mb-3">
             <Clock size={14} className="text-[#316817]" />
-            <p className="font-sans text-xs font-semibold tracking-[0.12em] uppercase text-[#7A6E60]">2. Chọn giờ bắt đầu</p>
+            <p className="font-sans text-xs font-semibold tracking-[0.12em] uppercase text-[#7A6E60] leading-none">2. Chọn giờ bắt đầu</p>
           </div>
 
           {selectedDate && dayData ? (
@@ -342,7 +339,7 @@ export default function CalendarPicker({ customer, calendarDays, onTimeSelected,
       <div className="lg:hidden mt-5">
         <div className="flex items-center gap-2 mb-3">
           <Clock size={14} className="text-[#316817]" />
-          <p className="font-sans text-xs font-semibold tracking-[0.12em] uppercase text-[#7A6E60]">2. Chọn giờ bắt đầu</p>
+          <p className="font-sans text-xs font-semibold tracking-[0.12em] uppercase text-[#7A6E60] leading-none">2. Chọn giờ bắt đầu</p>
         </div>
 
         {!selectedDate || !dayData ? (
@@ -361,7 +358,7 @@ export default function CalendarPicker({ customer, calendarDays, onTimeSelected,
               <p className="font-serif text-lg font-semibold text-[#2C2820] leading-tight">
                 {selectedChain[0].startTime} – {calculateEndTime(selectedChain[0].startTime, n)}
               </p>
-              <p className="font-sans text-[11px] text-[#7A8E70] mt-0.5">{n} khung × 45 phút · Chạm để đổi giờ</p>
+              <p className="font-sans text-[13px] text-[#5A7A50] mt-0.5">{n} khung × 45 phút · Chạm để đổi giờ</p>
             </div>
             <ChevronRight size={18} className="text-[#316817] flex-shrink-0" />
           </button>
@@ -373,7 +370,7 @@ export default function CalendarPicker({ customer, calendarDays, onTimeSelected,
             </div>
             <div className="flex-1 min-w-0">
               <p className="font-sans text-sm font-semibold text-[#2C2820]">Chọn giờ bắt đầu</p>
-              <p className="font-sans text-[11px] text-[#7A6E60] mt-0.5">
+              <p className="font-sans text-[13px] text-[#6B5F51] mt-0.5">
                 {validIndices.length} khung giờ còn trống
               </p>
             </div>
@@ -383,10 +380,10 @@ export default function CalendarPicker({ customer, calendarDays, onTimeSelected,
       </div>
 
       {selectedStartIdx !== null && selectedChain.length > 0 && (
-        <div className="hidden lg:block mt-6 rounded-2xl border border-[#AACF97] bg-[#F0F7EC] px-5 py-4">
+        <div className="hidden lg:block mt-6 rounded-2xl border border-[#E0D8CC] bg-[#FAF7F2] px-5 py-4 shadow-sm">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="space-y-1">
-              <p className="font-sans text-[10px] font-semibold tracking-[0.14em] uppercase text-[#316817]">
+              <p className="font-sans text-xs font-semibold tracking-[0.14em] uppercase text-[#316817]">
                 Khung giờ đã chọn
               </p>
               <p className="font-serif text-xl font-medium text-[#2C2820] leading-snug">
@@ -402,17 +399,12 @@ export default function CalendarPicker({ customer, calendarDays, onTimeSelected,
               {selectedChain.map((s, i) => (
                 <div
                   key={s.startTime}
-                  className={cn(
-                    "rounded-xl px-3 py-1.5 text-center transition-all duration-150 border",
-                    i === 0
-                      ? "bg-[#316817] border-[#316817] text-white shadow-sm"
-                      : "bg-[#EAF3E7] border-[#AACF97] text-[#275413]"
-                  )}
+                  className="rounded-xl px-3 py-1.5 text-center transition-all duration-150 border bg-[#316817] border-[#316817] text-white shadow-sm"
                 >
-                  <p className={cn("font-sans text-[9px] uppercase tracking-wider font-bold", i === 0 ? "text-[#E2BC7E]" : "text-[#5A7A50]")}>
+                  <p className="font-sans text-[11px] uppercase tracking-wider font-bold text-[#E2BC7E]">
                     Khung {i + 1}
                   </p>
-                  <p className={cn("font-serif text-xs tabular-nums font-semibold", i === 0 ? "text-white" : "text-[#275413]")}>
+                  <p className="font-serif text-sm tabular-nums font-semibold text-white">
                     {s.startTime} – {s.endTime}
                   </p>
                 </div>
@@ -426,7 +418,7 @@ export default function CalendarPicker({ customer, calendarDays, onTimeSelected,
 
       {/* Desktop actions — unchanged */}
       <div className="hidden lg:flex gap-3">
-        <Button variant="outline" className="rounded-xl" onClick={onBack}><ArrowLeft size={14} />Quay lại</Button>
+        <Button variant="outline" className="rounded-xl h-12 px-6" onClick={onBack}><ArrowLeft size={14} />Quay lại</Button>
         <Button variant="default" className="flex-1 rounded-xl h-12 bg-[#316817] hover:bg-[#1C3E0C] text-white font-semibold uppercase tracking-wider shadow-md"
           onClick={handleConfirm} disabled={selectedStartIdx === null || !selectedDate}>
           Xác nhận <ArrowRight size={14} className="ml-1" />
@@ -459,7 +451,7 @@ export default function CalendarPicker({ customer, calendarDays, onTimeSelected,
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
                   <p className="font-serif text-lg font-semibold text-[#2C2820] leading-tight">Chọn giờ bắt đầu</p>
-                  <p className="font-sans text-[11px] text-[#7A6E60] mt-0.5 truncate">
+                  <p className="font-sans text-[13px] text-[#6B5F51] mt-0.5 truncate">
                     {parseDate(selectedDate).dowFull}, {parseDate(selectedDate).day} {parseDate(selectedDate).month} · cần {n} khung liên tiếp
                   </p>
                 </div>

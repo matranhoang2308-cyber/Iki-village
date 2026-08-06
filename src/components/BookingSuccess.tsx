@@ -42,28 +42,28 @@ export default function BookingSuccess({ booking, onNewBooking, onReschedule }: 
       <Card className="text-left mb-6 rounded-2xl border-[#E0D8CC] overflow-hidden shadow-sm">
         <div className="p-4 bg-gradient-to-r from-[#1D400E] to-[#316817] text-white flex items-center justify-between">
           <div>
-            <p className="font-sans text-[10px] text-white/60 uppercase tracking-widest">Mã đặt lịch</p>
+            <p className="font-sans text-xs text-white/85 uppercase tracking-widest">Mã đặt lịch</p>
             <p className="font-serif text-xl font-bold">{bookingId}</p>
           </div>
           <Badge variant="gold">PENDING</Badge>
         </div>
         <CardContent className="p-5 space-y-3">
-          <div className="flex justify-between items-baseline gap-3 text-xs font-sans">
+          <div className="flex justify-between items-baseline gap-3 text-sm font-sans">
             <span className="text-[#7A6E60] flex-shrink-0">Khách hàng:</span>
             <span className="font-semibold text-[#2C2820] text-right">{customer.name}</span>
           </div>
           <Separator />
-          <div className="flex justify-between items-baseline gap-3 text-xs font-sans">
+          <div className="flex justify-between items-baseline gap-3 text-sm font-sans">
             <span className="text-[#7A6E60] flex-shrink-0">Ngày đặt lịch:</span>
             <span className="font-medium text-[#2C2820] text-right">{dateLabel}</span>
           </div>
-          <div className="flex justify-between items-baseline gap-3 text-xs font-sans">
+          <div className="flex justify-between items-baseline gap-3 text-sm font-sans">
             <span className="text-[#7A6E60] flex-shrink-0">Khung giờ:</span>
             <span className="font-semibold text-[#316817] text-right">{selectedStartTime} – {selectedEndTime} ({n * 45} phút)</span>
           </div>
           <Separator />
           <div>
-            <p className="font-sans text-[10px] uppercase text-[#9A8E80] mb-1.5 font-semibold">Căn hộ</p>
+            <p className="font-sans text-xs uppercase text-[#6B5F51] mb-1.5 font-semibold">Căn hộ</p>
             <div className="flex flex-wrap gap-1.5">
               {customer.apartments.map((apt) => (
                 <Badge key={apt.id} variant="default" className="text-xs">{apt.code}</Badge>
@@ -79,7 +79,7 @@ export default function BookingSuccess({ booking, onNewBooking, onReschedule }: 
           className="w-full h-12 rounded-xl bg-[#316817] hover:bg-[#1C3E0C] text-white font-semibold uppercase tracking-wider shadow-md flex items-center justify-center gap-2"
           onClick={onNewBooking}
         >
-          <span className="leading-none">Hoàn tất & Tra cứu mới</span>
+          <span>Hoàn tất & Tra cứu mới</span>
         </Button>
 
         <Button
@@ -88,10 +88,10 @@ export default function BookingSuccess({ booking, onNewBooking, onReschedule }: 
           onClick={onReschedule}
         >
           <CalendarCheck size={16} className="shrink-0" />
-          <span className="leading-none">Đổi lịch</span>
+          <span>Đổi lịch</span>
         </Button>
 
-        <p className="font-sans text-[11px] text-[#7A6E60] leading-relaxed">
+        <p className="font-sans text-[13px] text-[#6B5F51] leading-relaxed">
           Đổi lịch sẽ huỷ lịch hẹn <strong className="text-[#2C2820]">{bookingId}</strong> và trả lại khung giờ đã giữ.
         </p>
       </div>

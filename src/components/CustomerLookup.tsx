@@ -85,7 +85,7 @@ export default function CustomerLookup({ onCustomerFound }: Props) {
           </div>
 
           {/* Mô tả / Subtitle — mobile cách title 16px, desktop giữ 20px */}
-          <p className="font-sans text-[18px] sm:text-[28px] text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] max-w-xl leading-relaxed font-normal mt-2 sm:-mt-3">
+          <p className="font-sans text-[18px] sm:text-[28px] text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] max-w-xl leading-snug font-normal mt-2 sm:-mt-3">
             Vui lòng cung cấp số điện thoại hoặc email để tra cứu thông tin và đặt lịch ký HĐMB.
           </p>
         </div>
@@ -99,7 +99,7 @@ export default function CustomerLookup({ onCustomerFound }: Props) {
               <h2 className="font-sans text-lg font-bold text-[#2C2820] tracking-tight">
                 Tra cứu thông tin
               </h2>
-              <p className="font-sans text-xs text-[#7A6E60] mt-0.5">
+              <p className="font-sans text-sm text-[#6B5F51] mt-0.5">
                 Nhập thông tin của bạn đã đăng ký
               </p>
             </div>
@@ -115,19 +115,19 @@ export default function CustomerLookup({ onCustomerFound }: Props) {
                   }}
                 >
                   <TabsList className="grid grid-cols-2 mb-5 p-1 bg-[#F5F0E8] rounded-xl border border-[#E0D8CC]/40">
-                    <TabsTrigger value="phone" className="rounded-lg py-2.5 text-xs sm:text-sm font-medium flex items-center justify-center gap-2">
+                    <TabsTrigger value="phone" className="rounded-lg py-2.5 text-sm font-medium flex items-center justify-center gap-2">
                       <Phone size={15} className="shrink-0" />
-                      <span className="leading-none">Số điện thoại</span>
+                      <span className="optical-center">Số điện thoại</span>
                     </TabsTrigger>
-                    <TabsTrigger value="email" className="rounded-lg py-2.5 text-xs sm:text-sm font-medium flex items-center justify-center gap-2">
+                    <TabsTrigger value="email" className="rounded-lg py-2.5 text-sm font-medium flex items-center justify-center gap-2">
                       <Mail size={15} className="shrink-0" />
-                      <span className="leading-none">Email</span>
+                      <span className="optical-center">Email</span>
                     </TabsTrigger>
                   </TabsList>
 
                   <TabsContent value="phone">
                     <div className="space-y-2">
-                      <Label htmlFor="phone-in" className="text-[11px] tracking-wider uppercase text-[#7A6E60] font-bold">
+                      <Label htmlFor="phone-in" className="text-[13px] tracking-wider uppercase text-[#6B5F51] font-bold">
                         SỐ ĐIỆN THOẠI ĐĂNG KÝ
                       </Label>
                       <div className="relative">
@@ -150,7 +150,7 @@ export default function CustomerLookup({ onCustomerFound }: Props) {
 
                   <TabsContent value="email">
                     <div className="space-y-2">
-                      <Label htmlFor="email-in" className="text-[11px] tracking-wider uppercase text-[#7A6E60] font-bold">
+                      <Label htmlFor="email-in" className="text-[13px] tracking-wider uppercase text-[#6B5F51] font-bold">
                         ĐỊA CHỈ EMAIL ĐĂNG KÝ
                       </Label>
                       <div className="relative">
@@ -202,12 +202,12 @@ export default function CustomerLookup({ onCustomerFound }: Props) {
                         <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" strokeOpacity="0.25" />
                         <path d="M21 12a9 9 0 00-9-9" />
                       </svg>
-                      <span className="leading-none">Đang tra cứu...</span>
+                      <span className="optical-center">Đang tra cứu...</span>
                     </>
                   ) : (
                     <>
                       <Search size={16} className="shrink-0" />
-                      <span className="leading-none">Tra cứu thông tin</span>
+                      <span className="optical-center">Tra cứu thông tin</span>
                     </>
                   )}
                 </Button>
@@ -221,7 +221,7 @@ export default function CustomerLookup({ onCustomerFound }: Props) {
                     </div>
                     <div>
                       <p className="font-serif text-base font-medium text-[#2C2820] mb-1">Không tìm thấy</p>
-                      <p className="font-sans text-xs text-[#7A6E60] leading-relaxed">
+                      <p className="font-sans text-sm text-[#6B5F51] leading-relaxed">
                         Thông tin <strong className="text-[#2C2820]">"{query}"</strong> chưa được đăng ký. Kiểm tra lại hoặc gọi{" "}
                         <a href="tel:19001234" className="text-[#B8965A]">1900 1234</a>.
                       </p>

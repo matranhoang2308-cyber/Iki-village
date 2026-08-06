@@ -21,8 +21,8 @@ export default function ApartmentList({ customer, onProceed, onBack }: Props) {
     <div className="max-w-4xl mx-auto py-6 pb-28 sm:pb-6">
       {/* Page header */}
       <div className="flex items-start justify-between mb-8 gap-4 flex-wrap">
-        <div>
-          <p className="font-sans text-[10px] tracking-[0.18em] uppercase text-[#316817] mb-1">Bước 2 — Căn hộ</p>
+        <div className="space-y-1">
+          <p className="font-sans text-xs tracking-[0.18em] uppercase text-[#316817] font-semibold leading-none">Bước 2 — Căn hộ</p>
           <h2 className="font-serif text-2xl sm:text-3xl font-medium text-[#2C2820]">Danh sách căn hộ</h2>
         </div>
         <Button variant="ghost" size="sm" onClick={onBack} className="hidden sm:inline-flex"><ArrowLeft size={14} />Quay lại</Button>
@@ -44,7 +44,7 @@ export default function ApartmentList({ customer, onProceed, onBack }: Props) {
             <p className="font-sans text-sm text-white/80 pt-0.5 hidden sm:block">{customer.phone} · {customer.email}</p>
           </div>
           <div className="text-right flex-shrink-0">
-            <p className="font-sans text-[10px] text-white/50 uppercase tracking-wider mb-0.5">Tổng căn</p>
+            <p className="font-sans text-xs text-white/80 uppercase tracking-wider mb-0.5">Tổng căn</p>
             <p className="font-serif text-3xl sm:text-4xl text-[#E2BC7E] font-semibold leading-none">{n}</p>
           </div>
         </div>
@@ -62,18 +62,18 @@ export default function ApartmentList({ customer, onProceed, onBack }: Props) {
                     <img src={INTERIOR_IMGS[idx % INTERIOR_IMGS.length]} alt={`Căn ${apt.code}`} className="w-full h-full object-cover" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-sans text-[10px] text-[#9A8E80] tracking-wider uppercase">Căn {idx + 1}</p>
+                    <p className="font-sans text-xs text-[#6B5F51] tracking-wider uppercase">Căn {idx + 1}</p>
                     <p className="font-serif text-lg font-semibold text-[#2C2820] leading-tight truncate">{apt.code}</p>
                   </div>
                   <Badge variant="muted" className="flex-shrink-0">{apt.type}</Badge>
                 </div>
                 <div className="grid grid-cols-2 gap-x-3 gap-y-3 px-4 py-3">
                   <div>
-                    <p className="font-sans text-[10px] text-[#9A8E80] tracking-wider uppercase mb-0.5">Tháp / Tầng</p>
+                    <p className="font-sans text-xs text-[#6B5F51] tracking-wider uppercase mb-0.5">Tháp / Tầng</p>
                     <p className="font-sans text-sm text-[#4A4035] font-medium">{apt.tower} · T{apt.floor}</p>
                   </div>
                   <div>
-                    <p className="font-sans text-[10px] text-[#9A8E80] tracking-wider uppercase mb-0.5">Diện tích</p>
+                    <p className="font-sans text-xs text-[#6B5F51] tracking-wider uppercase mb-0.5">Diện tích</p>
                     <p className="font-sans text-sm text-[#4A4035] font-medium">{apt.area} m²</p>
                   </div>
                 </div>
@@ -91,25 +91,25 @@ export default function ApartmentList({ customer, onProceed, onBack }: Props) {
                   <div className="w-px self-stretch bg-[#E8E0D4]" />
                   <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-x-3 gap-y-2">
                     <div>
-                      <p className="font-sans text-[10px] text-[#9A8E80] tracking-wider uppercase mb-0.5">Mã căn</p>
+                      <p className="font-sans text-xs text-[#6B5F51] tracking-wider uppercase mb-0.5">Mã căn</p>
                       <p className="font-serif text-base font-semibold text-[#2C2820]">{apt.code}</p>
                     </div>
                     <div>
-                      <p className="font-sans text-[10px] text-[#9A8E80] tracking-wider uppercase mb-0.5">Tháp / Tầng</p>
+                      <p className="font-sans text-xs text-[#6B5F51] tracking-wider uppercase mb-0.5">Tháp / Tầng</p>
                       <p className="font-sans text-sm text-[#4A4035] font-medium">{apt.tower} · T{apt.floor}</p>
                     </div>
                     <div>
-                      <p className="font-sans text-[10px] text-[#9A8E80] tracking-wider uppercase mb-0.5">Diện tích</p>
+                      <p className="font-sans text-xs text-[#6B5F51] tracking-wider uppercase mb-0.5">Diện tích</p>
                       <p className="font-sans text-sm text-[#4A4035] font-medium">{apt.area} m²</p>
                     </div>
                     <div>
-                      <p className="font-sans text-[10px] text-[#9A8E80] tracking-wider uppercase mb-0.5">Loại</p>
+                      <p className="font-sans text-xs text-[#6B5F51] tracking-wider uppercase mb-0.5">Loại</p>
                       <Badge variant="muted">{apt.type}</Badge>
                     </div>
                   </div>
                   <div className="hidden md:flex flex-col items-center flex-shrink-0 ml-2 gap-1">
                     <Clock size={14} className="text-[#B8965A]" />
-                    <p className="font-sans text-[10px] text-center text-[#9A8E80] leading-tight">1 khung<br/>45 phút</p>
+                    <p className="font-sans text-xs text-center text-[#6B5F51] leading-tight">1 khung<br/>45 phút</p>
                   </div>
                 </div>
               </div>
@@ -138,7 +138,7 @@ export default function ApartmentList({ customer, onProceed, onBack }: Props) {
             {/* Big number is decorative — it repeats the sentence. Desktop only. */}
             <div className="hidden sm:block flex-shrink-0 text-center">
               <p className="font-serif text-4xl text-[#316817] font-semibold leading-none">{n}</p>
-              <p className="font-sans text-[10px] text-[#7A8E70] uppercase tracking-wider mt-0.5">khung giờ</p>
+              <p className="font-sans text-xs text-[#5A7A50] uppercase tracking-wider mt-0.5">khung giờ</p>
             </div>
           </div>
         </CardContent>
@@ -148,7 +148,7 @@ export default function ApartmentList({ customer, onProceed, onBack }: Props) {
 
       {/* Desktop actions — unchanged */}
       <div className="hidden sm:flex gap-3">
-        <Button variant="outline" className="rounded-xl" onClick={onBack}><ArrowLeft size={14} />Quay lại</Button>
+        <Button variant="outline" className="rounded-xl h-12 px-6" onClick={onBack}><ArrowLeft size={14} />Quay lại</Button>
         <Button variant="default" className="flex-1 rounded-xl h-12 bg-[#316817] hover:bg-[#1C3E0C] text-white font-semibold uppercase tracking-wider shadow-md" onClick={onProceed}>
           Chọn lịch bàn giao <ArrowRight size={14} className="ml-1" />
         </Button>
