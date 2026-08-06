@@ -85,7 +85,7 @@ export default function CustomerLookup({ onCustomerFound }: Props) {
           </div>
 
           {/* Mô tả / Subtitle — mobile cách title 16px, desktop giữ 20px */}
-          <p className="font-sans text-[18px] sm:text-[28px] text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] max-w-xl leading-relaxed font-normal -mt-3">
+          <p className="font-sans text-[18px] sm:text-[28px] text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] max-w-xl leading-relaxed font-normal mt-2">
             Vui lòng cung cấp số điện thoại hoặc email để tra cứu thông tin và đặt lịch ký HĐMB.
           </p>
         </div>
