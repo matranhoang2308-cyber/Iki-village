@@ -1,5 +1,102 @@
-@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 @import 'tailwindcss';
+
+/* ---------------------------------------------------------------
+   Pacific Standard — headings (h2, section titles)
+   --------------------------------------------------------------- */
+@font-face {
+  font-family: 'Pacific Standard';
+  src: url('/fonts/PacificStandard-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Pacific Standard';
+  src: url('/fonts/PacificStandard-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ---------------------------------------------------------------
+   Myriad Pro — body text
+   --------------------------------------------------------------- */
+@font-face {
+  font-family: 'Myriad Pro';
+  src: url('/fonts/MyriadPro-Light.otf') format('opentype');
+  font-weight: 200 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Myriad Pro';
+  src: url('/fonts/MyriadPro-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Myriad Pro';
+  src: url('/fonts/MyriadPro-Semibold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Myriad Pro';
+  src: url('/fonts/MyriadPro-SemiboldIt.otf') format('opentype');
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Myriad Pro';
+  src: url('/fonts/MyriadPro-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Myriad Pro';
+  src: url('/fonts/MyriadPro-BoldIt.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* ---------------------------------------------------------------
+   Myriad Pro Condensed — sub-headings (h3) + body per style guide.
+   No Light Condensed cut exists, so weights 200–400 all resolve to
+   the regular condensed face.
+   --------------------------------------------------------------- */
+@font-face {
+  font-family: 'Myriad Pro Condensed';
+  src: url('/fonts/MyriadPro-Cond.otf') format('opentype');
+  font-weight: 200 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Myriad Pro Condensed';
+  src: url('/fonts/MyriadPro-CondIt.otf') format('opentype');
+  font-weight: 200 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Myriad Pro Condensed';
+  src: url('/fonts/MyriadPro-BoldCond.otf') format('opentype');
+  font-weight: 600 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Myriad Pro Condensed';
+  src: url('/fonts/MyriadPro-BoldCondIt.otf') format('opentype');
+  font-weight: 600 700;
+  font-style: italic;
+  font-display: swap;
+}
 
 @theme {
   /* Green scale — primary #316817 */
@@ -10,6 +107,7 @@
   --color-green-400: #529838;
   --color-green-500: #316817;
   --color-green-600: #275413;
+  --color-green-650: #1C3E0C;
   --color-green-700: #1D400E;
   --color-green-800: #122B09;
   --color-green-900: #081505;
@@ -39,15 +137,22 @@
   /* Status */
   --color-error:          #C4714A;
 
-  --font-serif: 'Pacifico', 'Pacific Standard', cursive, serif;
-  --font-sans:  'Myriad Pro', 'Myriad standard', 'Myriad', 'Outfit', system-ui, sans-serif;
+  --font-serif: 'Pacific Standard', 'Times New Roman', serif;
+  --font-sans:  'Myriad Pro Condensed', 'Myriad Pro', 'Segoe UI', system-ui, sans-serif;
+  --font-cond:  'Myriad Pro Condensed', 'Segoe UI', sans-serif;
+  --font-wide:  'Myriad Pro', 'Segoe UI', system-ui, sans-serif;
+
+  /* Brand text colors from the IKI Village style guide */
+  --color-heading-brown: rgb(177, 125, 89);
+  --color-label-brown:   rgb(93, 81, 69);
+  --color-body-brown:    rgb(95, 84, 74);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
 
 body {
-  font-family: 'Myriad Pro', 'Myriad standard', 'Myriad', 'Outfit', system-ui, sans-serif;
+  font-family: 'Myriad Pro Condensed', 'Myriad Pro', 'Segoe UI', system-ui, sans-serif;
   background-color: #F5F0E8;
   color: #2C2820;
   -webkit-font-smoothing: antialiased;
@@ -59,12 +164,18 @@ body {
 ::-webkit-scrollbar-thumb { background: #316817 40; border-radius: 2px; }
 ::-webkit-scrollbar-thumb:hover { background: #316817 80; }
 
-.font-serif { font-family: 'Pacifico', 'Pacific Standard', cursive, serif; }
-.font-sans  { font-family: 'Myriad Pro', 'Myriad standard', 'Myriad', 'Outfit', system-ui, sans-serif; }
+.font-serif { font-family: 'Pacific Standard', 'Times New Roman', serif; }
+.font-sans  { font-family: 'Myriad Pro Condensed', 'Myriad Pro', 'Segoe UI', system-ui, sans-serif; }
+.font-cond  { font-family: 'Myriad Pro Condensed', 'Segoe UI', sans-serif; }
+.font-wide  { font-family: 'Myriad Pro', 'Segoe UI', system-ui, sans-serif; }
 
 /* Animations */
 @keyframes fadeIn  { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes slideUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Countdown flip: digit drops in from above as the value changes. */
+@keyframes flipDigit { from { transform: translateY(-40%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.flip-digit { animation: flipDigit 0.2s ease-out; }
 
 /* Bottom-sheet entrance: travels the full height of the panel, not a nudge. */
 @keyframes sheetUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
@@ -74,5 +185,5 @@ body {
 @keyframes sheetFade { from { opacity: 0; } to { opacity: 1; } }
 
 @media (prefers-reduced-motion: reduce) {
-  .sheet-panel, .sheet-overlay { animation: none; }
+  .sheet-panel, .sheet-overlay, .flip-digit { animation: none; }
 }

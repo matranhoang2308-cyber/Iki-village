@@ -4,28 +4,65 @@ interface Props {
   totalSeconds?: number          // e.g. 300 for 5 minutes
   durationSeconds?: number       // alias prop
   onExpire: () => void
+  /* Strips the dark card, heading and progress bar, leaving only the digit
+     tiles. Used on mobile, where the timer sits bare above the details. */
+  bare?: boolean
 }
 
 function pad(n: number) {
   return String(n).padStart(2, "0")
 }
 
-function TimeBox({ value, label }: { value: number; label: string }) {
+/* Flip tile, ported from the Framer Countdown component. The digit is keyed on
+   its own value so a change remounts the node and replays the drop-in
+   animation — the same trick Framer's AnimatePresence does, without pulling in
+   framer-motion. */
+function FlipUnit({ value, label, bare }: { value: number; label: string; bare?: boolean }) {
+  const text = pad(value)
   return (
-    <div className="flex flex-col items-center flex-1">
-      <div className="w-full py-3 bg-[#081505]/80 border border-[#316817]/40 rounded-xl text-center shadow-inner">
-        <span className="font-serif text-3xl font-bold text-[#FAF7F2] tracking-wider leading-none">
-          {pad(value)}
+    <div className="flex flex-col items-center mx-1 sm:mx-1.5">
+      <div
+        className={
+          bare
+            ? "relative w-14 h-14 bg-[#316817] rounded-lg overflow-hidden shadow-sm"
+            : "relative w-14 h-14 sm:w-16 sm:h-16 bg-[#081505] rounded-lg overflow-hidden shadow-[0_4px_8px_rgba(0,0,0,0.4)]"
+        }
+      >
+        <span
+          key={text}
+          className="flip-digit absolute inset-0 flex items-center justify-center font-serif text-2xl sm:text-3xl font-bold text-[#FAF7F2] leading-none [text-shadow:0_1px_2px_rgba(0,0,0,0.3)]"
+        >
+          {text}
         </span>
       </div>
-      <span className="font-sans text-[10px] uppercase tracking-widest text-[#E2BC7E]/80 mt-1.5 font-medium">
+      <span
+        className={
+          bare
+            ? "mt-1.5 font-sans text-[10px] font-medium uppercase tracking-widest text-[#7A6E60] leading-none"
+            : "mt-2 font-sans text-[10px] font-medium uppercase tracking-widest text-[#E2BC7E] leading-none"
+        }
+      >
         {label}
       </span>
     </div>
   )
 }
 
-export default function CountdownTimer({ totalSeconds, durationSeconds, onExpire }: Props) {
+function Separator({ bare }: { bare?: boolean }) {
+  return (
+    <span
+      className={
+        bare
+          ? "font-serif text-xl font-bold text-[#316817] mx-0.5 pb-5"
+          : "font-serif text-xl sm:text-2xl font-bold text-[#E2BC7E] mx-0.5 pb-6"
+      }
+    >
+      :
+    </span>
+  )
+}
+
+export default function CountdownTimer({ totalSeconds, durationSeconds, onExpire, bare }: Props) {
   const initialSeconds = totalSeconds ?? durationSeconds ?? 300
   const [secondsLeft, setSecondsLeft] = useState(initialSeconds)
   const expiredRef = useRef(false)
@@ -47,8 +84,16 @@ export default function CountdownTimer({ totalSeconds, durationSeconds, onExpire
     return () => clearInterval(id)
   }, [])
 
-  const minutes = Math.floor(secondsLeft / 60)
+  const days    = Math.floor(secondsLeft / 86400)
+  const hours   = Math.floor((secondsLeft % 86400) / 3600)
+  const minutes = Math.floor((secondsLeft % 3600) / 60)
   const seconds = secondsLeft % 60
+
+  /* A 5-minute hold would otherwise render two permanent "00" tiles. Show the
+     larger units only once the duration actually reaches them. */
+  const showDays  = initialSeconds >= 86400
+  const showHours = initialSeconds >= 3600
+
   const progress = initialSeconds > 0 ? secondsLeft / initialSeconds : 0
   const pct      = Math.min(100, Math.max(0, Math.round(progress * 100)))
 
@@ -59,6 +104,41 @@ export default function CountdownTimer({ totalSeconds, durationSeconds, onExpire
 
   const barColor = secondsLeft > 120 ? "#316817" : secondsLeft > 60 ? "#B8965A" : "#C4714A"
 
+  const units = (
+    <>
+      {showDays && (
+        <>
+          <FlipUnit value={days} label="Ngày" bare={bare} />
+          <Separator bare={bare} />
+        </>
+      )}
+      {showHours && (
+        <>
+          <FlipUnit value={hours} label="Giờ" bare={bare} />
+          <Separator bare={bare} />
+        </>
+      )}
+      <FlipUnit value={minutes} label="Phút" bare={bare} />
+      <Separator bare={bare} />
+      <FlipUnit value={seconds} label="Giây" bare={bare} />
+    </>
+  )
+
+  /* Bare: digits only. No card, no heading, no progress bar — the caller
+     supplies the surrounding context. */
+  if (bare) {
+    return (
+      <div>
+        <div className="flex items-center justify-center">{units}</div>
+        {milestone && (
+          <p className="mt-3 text-center text-xs font-sans font-medium" style={{ color: milestone.color }}>
+            {milestone.icon} {milestone.text}
+          </p>
+        )}
+      </div>
+    )
+  }
+
   return (
     <div className="w-full bg-gradient-to-br from-[#081505] via-[#122B09] to-[#081505] border border-[#316817]/40 rounded-2xl p-4 shadow-xl text-white">
       {/* Label */}
@@ -68,12 +148,8 @@ export default function CountdownTimer({ totalSeconds, durationSeconds, onExpire
         </p>
       </div>
 
-      {/* Time Boxes */}
-      <div className="flex items-center justify-center gap-2 mb-4 px-2">
-        <TimeBox value={minutes} label="Phút" />
-        <span className="font-serif text-xl text-[#E2BC7E] font-bold pb-4">:</span>
-        <TimeBox value={seconds} label="Giây" />
-      </div>
+      {/* Flip units */}
+      <div className="flex items-center justify-center mb-4">{units}</div>
 
       {/* Progress */}
       <div className="space-y-1.5">

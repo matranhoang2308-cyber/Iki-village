@@ -30,15 +30,18 @@ export default function ApartmentList({ customer, onProceed, onBack }: Props) {
 
       {/* Customer banner — primary green */}
       <Card className="mb-6 overflow-hidden border-0 shadow-[0_4px_24px_rgba(49,104,23,0.15)] rounded-2xl">
-        <div className="p-4 sm:p-5 flex items-center gap-3 sm:gap-4" style={{ background: "linear-gradient(135deg,#1D400E 0%,#275413 100%)" }}>
+        <div className="p-3 sm:p-5 flex items-center gap-3 sm:gap-4" style={{ background: "linear-gradient(135deg,#1D400E 0%,#275413 100%)" }}>
           <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-[#B8965A] to-[#CDA85A] flex items-center justify-center flex-shrink-0 text-[#FAF7F2] font-serif text-lg sm:text-xl font-semibold shadow-md">
             {customer.name.charAt(0)}
           </div>
           <div className="flex-1 min-w-0 py-1 space-y-1">
             <p className="font-serif text-lg sm:text-2xl text-white font-normal truncate leading-snug">{customer.name}</p>
-            {/* Mobile: phone only — compact spacing for phone display */}
-            <p className="font-sans text-sm text-white/80 pt-0 sm:hidden">{customer.phone}</p>
-            <p className="font-sans text-sm text-white/80 pt-1.5 hidden sm:block">{customer.phone} · {customer.email}</p>
+            {/* Mobile: phone and email stack, since the dot-joined line overflows */}
+            <div className="sm:hidden">
+              <p className="font-sans text-sm text-white/80">{customer.phone}</p>
+              <p className="font-sans text-sm text-white/80 truncate">{customer.email}</p>
+            </div>
+            <p className="font-sans text-sm text-white/80 pt-0.5 hidden sm:block">{customer.phone} · {customer.email}</p>
           </div>
           <div className="text-right flex-shrink-0">
             <p className="font-sans text-[10px] text-white/50 uppercase tracking-wider mb-0.5">Tổng căn</p>
@@ -128,7 +131,7 @@ export default function ApartmentList({ customer, onProceed, onBack }: Props) {
                 <strong className="text-[#316817]">{n} khung giờ liên tiếp</strong>{" "}
                 ({n} × 45 phút = <strong className="text-[#2C2820]">{n * 45} phút</strong>).
               </p>
-              <p className="font-sans text-xs text-[#7A8E70] mt-1">
+              <p className="font-sans text-sm text-[#7A8E70] mt-1">
                 Chỉ hiển thị giờ bắt đầu có đủ {n} khung liên tiếp còn slot trống.
               </p>
             </div>
@@ -146,7 +149,7 @@ export default function ApartmentList({ customer, onProceed, onBack }: Props) {
       {/* Desktop actions — unchanged */}
       <div className="hidden sm:flex gap-3">
         <Button variant="outline" className="rounded-xl" onClick={onBack}><ArrowLeft size={14} />Quay lại</Button>
-        <Button variant="default" className="flex-1 rounded-xl h-12 bg-[#316817] hover:bg-[#275413] text-white font-semibold uppercase tracking-wider shadow-md" onClick={onProceed}>
+        <Button variant="default" className="flex-1 rounded-xl h-12 bg-[#316817] hover:bg-[#1C3E0C] text-white font-semibold uppercase tracking-wider shadow-md" onClick={onProceed}>
           Chọn lịch bàn giao <ArrowRight size={14} className="ml-1" />
         </Button>
       </div>
@@ -157,7 +160,7 @@ export default function ApartmentList({ customer, onProceed, onBack }: Props) {
           <ArrowLeft size={18} />
         </Button>
         <Button variant="default" onClick={onProceed}
-          className="flex-1 rounded-xl h-12 bg-[#316817] hover:bg-[#275413] text-white font-semibold uppercase tracking-wider shadow-md">
+          className="flex-1 rounded-xl h-12 bg-[#316817] hover:bg-[#1C3E0C] text-white font-semibold uppercase tracking-wider shadow-md">
           Chọn lịch <ArrowRight size={16} className="ml-1" />
         </Button>
       </div>

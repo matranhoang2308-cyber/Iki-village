@@ -58,7 +58,7 @@ function SlotRow({
           isSelected
             ? "bg-[#316817] border-[#316817] text-white shadow-md font-semibold cursor-pointer"
             : role === "in-chain"
-              ? "bg-[#275413] border-[#275413] text-white cursor-pointer"
+              ? "bg-[#EAF3E7] border-[#AACF97] text-[#275413] cursor-pointer font-medium"
               : role === "hovered-chain"
                 ? "bg-[#F0F7EC] border-[#AACF97] text-[#275413] cursor-pointer"
                 : isValidStart
@@ -69,19 +69,19 @@ function SlotRow({
         )}
       >
         <div className="flex items-center gap-2.5">
-          <Clock size={14} className={isSelected || role === "in-chain" ? "text-[#E2BC7E]" : "text-[#316817]"} />
+          <Clock size={14} className={isSelected ? "text-[#E2BC7E]" : "text-[#316817]"} />
           <span className="font-serif text-sm font-medium">
             {slot.startTime} – {slot.endTime}
           </span>
         </div>
         <div className="flex items-center gap-2.5">
           <span className={cn("text-[10px] font-sans tabular-nums",
-            isSelected || role === "in-chain" ? "text-white/70" : slot.available === 0 ? "text-[#C4BDBA]" : "text-[#9A8E80]")}>
+            isSelected ? "text-white/70" : slot.available === 0 ? "text-[#C4BDBA]" : "text-[#7A6E60]")}>
             {slot.available}/{slot.capacity} trống
           </span>
           {isInChain
             ? <span className={cn("text-[10px] font-bold whitespace-nowrap",
-                isSelected ? "text-[#E2BC7E]" : role === "in-chain" ? "text-[#E2BC7E]" : "text-[#316817]")}>
+                isSelected ? "text-[#E2BC7E]" : "text-[#316817]")}>
                 Khung {chainIdx + 1}/{totalN}
               </span>
             : slot.available === 0
@@ -237,7 +237,7 @@ export default function CalendarPicker({ customer, calendarDays, onTimeSelected,
       <div className="flex items-start justify-between mb-6 sm:mb-8 gap-4 flex-wrap">
         <div className="space-y-2 sm:space-y-3">
           <p className="font-sans text-xs tracking-[0.18em] uppercase text-[#316817] font-semibold">Bước 3 — Lịch hẹn</p>
-          <h2 className="font-serif text-2xl sm:text-4xl font-normal text-[#2C2820] leading-snug py-1">Chọn ngày &amp; giờ bàn giao</h2>
+          <h2 className="font-serif text-2xl sm:text-4xl font-normal text-[#2C2820] leading-snug py-1">Chọn ngày &amp; giờ</h2>
           <p className="font-sans text-sm sm:text-base text-[#7A6E60] leading-relaxed pt-1">
             Quý khách có <strong className="text-[#316817]">{n} căn</strong> — cần{" "}
             <strong className="text-[#316817]">{n} khung 45 phút liên tiếp</strong>.
@@ -400,9 +400,21 @@ export default function CalendarPicker({ customer, calendarDays, onTimeSelected,
             </div>
             <div className="flex flex-wrap gap-1.5">
               {selectedChain.map((s, i) => (
-                <div key={s.startTime} className="rounded-lg border border-[#AACF97] bg-white px-2.5 py-1.5 text-center">
-                  <p className="font-sans text-[9px] uppercase tracking-wider text-[#9A8E80]">Khung {i + 1}</p>
-                  <p className="font-serif text-xs font-medium text-[#2C2820] tabular-nums">{s.startTime}</p>
+                <div
+                  key={s.startTime}
+                  className={cn(
+                    "rounded-xl px-3 py-1.5 text-center transition-all duration-150 border",
+                    i === 0
+                      ? "bg-[#316817] border-[#316817] text-white shadow-sm"
+                      : "bg-[#EAF3E7] border-[#AACF97] text-[#275413]"
+                  )}
+                >
+                  <p className={cn("font-sans text-[9px] uppercase tracking-wider font-bold", i === 0 ? "text-[#E2BC7E]" : "text-[#5A7A50]")}>
+                    Khung {i + 1}
+                  </p>
+                  <p className={cn("font-serif text-xs tabular-nums font-semibold", i === 0 ? "text-white" : "text-[#275413]")}>
+                    {s.startTime} – {s.endTime}
+                  </p>
                 </div>
               ))}
             </div>
@@ -415,7 +427,7 @@ export default function CalendarPicker({ customer, calendarDays, onTimeSelected,
       {/* Desktop actions — unchanged */}
       <div className="hidden lg:flex gap-3">
         <Button variant="outline" className="rounded-xl" onClick={onBack}><ArrowLeft size={14} />Quay lại</Button>
-        <Button variant="default" className="flex-1 rounded-xl h-12 bg-[#316817] hover:bg-[#275413] text-white font-semibold uppercase tracking-wider shadow-md"
+        <Button variant="default" className="flex-1 rounded-xl h-12 bg-[#316817] hover:bg-[#1C3E0C] text-white font-semibold uppercase tracking-wider shadow-md"
           onClick={handleConfirm} disabled={selectedStartIdx === null || !selectedDate}>
           Xác nhận <ArrowRight size={14} className="ml-1" />
         </Button>
@@ -428,7 +440,7 @@ export default function CalendarPicker({ customer, calendarDays, onTimeSelected,
             <ArrowLeft size={18} />
           </Button>
           <Button variant="default" onClick={handleConfirm} disabled={selectedStartIdx === null || !selectedDate}
-            className="flex-1 rounded-xl h-12 bg-[#316817] hover:bg-[#275413] text-white font-semibold uppercase tracking-wider shadow-md">
+            className="flex-1 rounded-xl h-12 bg-[#316817] hover:bg-[#1C3E0C] text-white font-semibold uppercase tracking-wider shadow-md">
             {selectedStartIdx === null ? "Chọn giờ bắt đầu" : "Xác nhận"}
             {selectedStartIdx !== null && <ArrowRight size={16} className="ml-1" />}
           </Button>

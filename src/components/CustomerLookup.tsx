@@ -69,24 +69,24 @@ export default function CustomerLookup({ onCustomerFound }: Props) {
           </div>
 
           {/* Tiêu đề chính H1 nổi bật với Text Shadow & Tương phản cao */}
-          <div className="space-y-2 sm:space-y-[20px] mt-0 sm:mt-[24px]">
+          <div className="space-y-1 mt-0 sm:mt-[24px]">
             <h1
               className="font-serif text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)] leading-none"
-              style={{ fontSize: "clamp(2.2rem, 4vw, 3.5rem)", fontWeight: 500 }}
+              style={{ fontSize: "clamp(2.5rem, 5vw, 4.375rem)", fontWeight: 500 }}
             >
               Chào mừng đến
             </h1>
             <h1
               className="font-serif text-[#D5EACB] drop-shadow-[0_6px_16px_rgba(0,0,0,0.9)] leading-tight tracking-wide whitespace-nowrap"
-              style={{ fontSize: "clamp(2.85rem, 6vw, 5.05rem)", fontWeight: 700 }}
+              style={{ fontSize: "clamp(4rem, 8vw, 7.5rem)", fontWeight: 700 }}
             >
               IKI Village
             </h1>
           </div>
 
           {/* Mô tả / Subtitle — mobile cách title 16px, desktop giữ 20px */}
-          <p className="font-sans text-base sm:text-xl text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] max-w-xl leading-relaxed font-normal mt-4 sm:mt-[20px]">
-            Vui lòng cung cấp số điện thoại hoặc email để tra cứu thông tin và đặt lịch bàn giao căn hộ.
+          <p className="font-sans text-[18px] sm:text-[28px] text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] max-w-xl leading-relaxed font-normal -mt-3">
+            Vui lòng cung cấp số điện thoại hoặc email để tra cứu thông tin và đặt lịch ký HĐMB.
           </p>
         </div>
 
@@ -100,7 +100,7 @@ export default function CustomerLookup({ onCustomerFound }: Props) {
                 Tra cứu thông tin
               </h2>
               <p className="font-sans text-xs text-[#7A6E60] mt-0.5">
-                Nhập thông tin cư dân để tiếp tục
+                Nhập thông tin của bạn đã đăng ký
               </p>
             </div>
 
@@ -115,11 +115,13 @@ export default function CustomerLookup({ onCustomerFound }: Props) {
                   }}
                 >
                   <TabsList className="grid grid-cols-2 mb-5 p-1 bg-[#F5F0E8] rounded-xl border border-[#E0D8CC]/40">
-                    <TabsTrigger value="phone" className="rounded-lg py-2.5 text-xs sm:text-sm font-medium">
-                      <Phone size={14} className="mr-2" /> Số điện thoại
+                    <TabsTrigger value="phone" className="rounded-lg py-2.5 text-xs sm:text-sm font-medium flex items-center justify-center gap-2">
+                      <Phone size={15} className="shrink-0" />
+                      <span className="leading-none">Số điện thoại</span>
                     </TabsTrigger>
-                    <TabsTrigger value="email" className="rounded-lg py-2.5 text-xs sm:text-sm font-medium">
-                      <Mail size={14} className="mr-2" /> Email
+                    <TabsTrigger value="email" className="rounded-lg py-2.5 text-xs sm:text-sm font-medium flex items-center justify-center gap-2">
+                      <Mail size={15} className="shrink-0" />
+                      <span className="leading-none">Email</span>
                     </TabsTrigger>
                   </TabsList>
 
@@ -190,21 +192,22 @@ export default function CustomerLookup({ onCustomerFound }: Props) {
 
                 <Button
                   variant="default"
-                  className="w-full h-12 rounded-xl text-sm font-semibold tracking-wider uppercase shadow-xl bg-[#316817] hover:bg-[#275413] text-white transition-all duration-200"
+                  className="w-full h-12 rounded-xl text-sm font-semibold tracking-wider uppercase shadow-xl bg-[#316817] hover:bg-[#1C3E0C] text-white transition-all duration-200 flex items-center justify-center gap-2"
                   onClick={handleSearch}
                   disabled={!query.trim() || status === "searching"}
                 >
                   {status === "searching" ? (
                     <>
-                      <svg className="animate-spin mr-2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                      <svg className="animate-spin shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                         <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" strokeOpacity="0.25" />
                         <path d="M21 12a9 9 0 00-9-9" />
                       </svg>
-                      Đang tra cứu...
+                      <span className="leading-none">Đang tra cứu...</span>
                     </>
                   ) : (
                     <>
-                      <Search size={16} className="mr-2" /> Tra cứu thông tin
+                      <Search size={16} className="shrink-0" />
+                      <span className="leading-none">Tra cứu thông tin</span>
                     </>
                   )}
                 </Button>

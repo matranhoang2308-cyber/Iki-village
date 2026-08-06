@@ -71,7 +71,7 @@ export default function ExistingBooking({ booking, status, onReschedule, onBack 
           </div>
           <Separator />
           <div className="flex justify-between items-baseline gap-3 text-xs font-sans">
-            <span className="text-[#7A6E60] flex-shrink-0">Ngày bàn giao:</span>
+            <span className="text-[#7A6E60] flex-shrink-0">Ngày đặt lịch:</span>
             <span className="font-medium text-[#2C2820] text-right">{dateLabel}</span>
           </div>
           <div className="flex justify-between items-baseline gap-3 text-xs font-sans">
@@ -106,14 +106,14 @@ export default function ExistingBooking({ booking, status, onReschedule, onBack 
       <div className="hidden sm:block space-y-3">
         {canReschedule && (
           <Button variant="default" onClick={onReschedule}
-            className="w-full h-12 rounded-xl bg-[#316817] hover:bg-[#275413] text-white font-semibold uppercase tracking-wider shadow-md">
-            <CalendarCheck size={16} className="mr-2" />
-            Đổi lịch
+            className="w-full h-12 rounded-xl bg-[#316817] hover:bg-[#1C3E0C] text-white font-semibold uppercase tracking-wider shadow-md flex items-center justify-center gap-2">
+            <CalendarCheck size={16} className="shrink-0" />
+            <span className="leading-none">Đổi lịch</span>
           </Button>
         )}
-        <Button variant="outline" onClick={onBack} className="w-full h-12 rounded-xl font-semibold uppercase tracking-wider">
-          <ArrowLeft size={16} className="mr-2" />
-          Tra cứu số khác
+        <Button variant="outline" onClick={onBack} className="w-full h-12 rounded-xl font-semibold uppercase tracking-wider flex items-center justify-center gap-2">
+          <ArrowLeft size={16} className="shrink-0" />
+          <span className="leading-none">Tra cứu số khác</span>
         </Button>
         {canReschedule && (
           <p className="font-sans text-[11px] text-[#7A6E60] leading-relaxed text-center">
@@ -125,17 +125,17 @@ export default function ExistingBooking({ booking, status, onReschedule, onBack 
       {/* Mobile: sticky action bar */}
       <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 border-t border-[#E0D8CC] bg-[#F5F0E8]/95 backdrop-blur-md px-4 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] flex gap-2.5">
         <Button variant="outline" onClick={onBack} aria-label="Tra cứu số khác"
-          className="rounded-xl h-12 w-12 flex-shrink-0 p-0">
+          className="rounded-xl h-12 w-12 flex-shrink-0 p-0 flex items-center justify-center">
           <ArrowLeft size={18} />
         </Button>
         {canReschedule ? (
           <Button variant="default" onClick={onReschedule}
-            className="flex-1 rounded-xl h-12 bg-[#316817] hover:bg-[#275413] text-white font-semibold uppercase tracking-wider shadow-md">
-            <CalendarCheck size={16} className="mr-2" />
-            Đổi lịch
+            className="flex-1 rounded-xl h-12 bg-[#316817] hover:bg-[#1C3E0C] text-white font-semibold uppercase tracking-wider shadow-md flex items-center justify-center gap-2">
+            <CalendarCheck size={16} className="shrink-0" />
+            <span className="leading-none">Đổi lịch</span>
           </Button>
         ) : (
-          <Button variant="outline" asChild className="flex-1 rounded-xl h-12 font-semibold uppercase tracking-wider">
+          <Button variant="outline" asChild className="flex-1 rounded-xl h-12 font-semibold uppercase tracking-wider flex items-center justify-center gap-2">
             <a href="tel:19001234">Gọi 1900 1234</a>
           </Button>
         )}

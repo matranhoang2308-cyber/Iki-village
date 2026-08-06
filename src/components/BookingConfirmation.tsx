@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import CountdownTimer from "@/components/CountdownTimer"
+import { useIsDesktop } from "@/lib/useMediaQuery"
 import { BookingState } from "@/App"
 
 const VI_DAYS   = ["Chủ nhật","Thứ hai","Thứ ba","Thứ tư","Thứ năm","Thứ sáu","Thứ bảy"]
@@ -20,6 +21,7 @@ interface Props {
 
 export default function BookingConfirmation({ booking, onConfirm, onBack }: Props) {
   const [confirmExpired, setConfirmExpired] = useState(false)
+  const isDesktop = useIsDesktop()
 
   const { customer, selectedDate, selectedStartTime, selectedEndTime, chain, submitStatus, conflictMessage } = booking
   if (!customer || !selectedDate || !selectedStartTime || !selectedEndTime) return null
@@ -46,6 +48,19 @@ export default function BookingConfirmation({ booking, onConfirm, onBack }: Prop
         <Button variant="ghost" size="sm" onClick={onBack} className="rounded-xl hidden lg:inline-flex"><ArrowLeft size={14} />Quay lại</Button>
       </div>
 
+      {/* Hold timer, mobile only: bare digits directly under the heading, no
+          card. Gated on `isDesktop` rather than `lg:hidden` because the
+          desktop card renders the same component — a CSS-hidden branch would
+          still mount, running a second interval and firing onExpire twice. */}
+      {!confirmExpired && !isDesktop && (
+        <div className="mb-6">
+          <p className="font-sans text-[10px] text-center tracking-[0.18em] uppercase text-[#7A6E60] font-semibold mb-2.5">
+            Thời gian giữ chỗ còn lại
+          </p>
+          <CountdownTimer totalSeconds={CONFIRM_HOLD} onExpire={handleConfirmExpired} bare />
+        </div>
+      )}
+
       {/* Mobile order: details first, then the hold timer — you should see WHAT
           you are confirming before the confirm control. Desktop keeps its
           original left/right split via lg:order-*. */}
@@ -53,10 +68,12 @@ export default function BookingConfirmation({ booking, onConfirm, onBack }: Prop
         {/* Left column: Countdown + Action */}
         <div className="lg:col-span-5 space-y-4 order-2 lg:order-1">
           {!confirmExpired ? (
-            <Card className="p-4 bg-[#FAF7F2] border-[#E0D8CC] rounded-2xl">
-              <p className="font-sans text-xs text-[#7A6E60] mb-2 font-medium">Thời gian giữ slot còn lại:</p>
-              <CountdownTimer totalSeconds={CONFIRM_HOLD} onExpire={handleConfirmExpired} />
-            </Card>
+            isDesktop && (
+              <Card className="p-4 bg-[#FAF7F2] border-[#E0D8CC] rounded-2xl">
+                <p className="font-sans text-xs text-[#7A6E60] mb-2 font-medium">Thời gian giữ slot còn lại:</p>
+                <CountdownTimer totalSeconds={CONFIRM_HOLD} onExpire={handleConfirmExpired} />
+              </Card>
+            )
           ) : (
             <Card className="p-4 bg-[#FDF5F5] border-[#C4714A] rounded-2xl text-center">
               <p className="font-sans text-xs font-semibold text-[#C4714A] mb-1">Hết thời gian giữ chỗ!</p>
@@ -82,7 +99,7 @@ export default function BookingConfirmation({ booking, onConfirm, onBack }: Prop
               variant="default"
               disabled={isDisabled}
               onClick={onConfirm}
-              className="w-full h-12 rounded-xl bg-[#316817] hover:bg-[#275413] text-white font-semibold uppercase tracking-wider shadow-md"
+              className="w-full h-12 rounded-xl bg-[#316817] hover:bg-[#1C3E0C] text-white font-semibold uppercase tracking-wider shadow-md"
             >
               {isChecking ? "Đang xác thực..." : "Xác nhận đặt lịch"}
             </Button>
@@ -100,14 +117,18 @@ export default function BookingConfirmation({ booking, onConfirm, onBack }: Prop
                 <div className="space-y-1 min-w-0">
                   <p className="font-sans text-[10px] text-[#9A8E80] uppercase tracking-wider">Khách hàng</p>
                   <p className="font-serif text-lg sm:text-xl font-normal text-[#2C2820] leading-snug py-0.5 truncate">{customer.name}</p>
-                  <p className="font-sans text-xs text-[#7A6E60] sm:hidden">{customer.phone}</p>
+                  {/* Mobile: phone and email stack, since the dot-joined line overflows */}
+                  <div className="sm:hidden">
+                    <p className="font-sans text-xs text-[#7A6E60]">{customer.phone}</p>
+                    <p className="font-sans text-xs text-[#7A6E60] truncate">{customer.email}</p>
+                  </div>
                   <p className="font-sans text-xs text-[#7A6E60] hidden sm:block">{customer.phone} · {customer.email}</p>
                 </div>
                 <Badge variant="outline" className="bg-white border-[#316817] text-[#316817] flex-shrink-0 whitespace-nowrap">{n} căn hộ</Badge>
               </div>
 
               <div className="space-y-1">
-                <p className="font-sans text-xs font-semibold text-[#7A6E60] uppercase tracking-wider">Thời gian bàn giao</p>
+                <p className="font-sans text-xs font-semibold text-[#7A6E60] uppercase tracking-wider">Thời gian đặt lịch</p>
                 <p className="font-serif text-xl sm:text-2xl font-bold text-[#316817] py-0.5">{selectedStartTime} → {selectedEndTime}</p>
                 <p className="font-sans text-xs text-[#7A6E60]">{dateLabel} ({n * 45} phút)</p>
               </div>
@@ -136,7 +157,7 @@ export default function BookingConfirmation({ booking, onConfirm, onBack }: Prop
           variant="default"
           disabled={isDisabled}
           onClick={onConfirm}
-          className="flex-1 rounded-xl h-12 bg-[#316817] hover:bg-[#275413] text-white font-semibold uppercase tracking-wider shadow-md"
+          className="flex-1 rounded-xl h-12 bg-[#316817] hover:bg-[#1C3E0C] text-white font-semibold uppercase tracking-wider shadow-md"
         >
           {isChecking ? (
             <>

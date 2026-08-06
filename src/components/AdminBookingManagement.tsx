@@ -72,7 +72,7 @@ export default function AdminBookingManagement({ records, onUpdateStatus, onBack
                   {record.status}
                 </Badge>
                 {record.status === "PENDING" && (
-                  <Button variant="default" size="sm" onClick={() => onUpdateStatus(record.id, "APPROVED")} className="bg-[#316817] hover:bg-[#275413] rounded-lg">
+                  <Button variant="default" size="sm" onClick={() => onUpdateStatus(record.id, "APPROVED")} className="bg-[#316817] hover:bg-[#224A10] rounded-lg">
                     Duyệt
                   </Button>
                 )}
