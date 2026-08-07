@@ -48,7 +48,7 @@ export default function CustomerLookup({ onCustomerFound }: Props) {
         className="absolute inset-0 z-0"
         style={{
           background:
-            "linear-gradient(135deg, rgba(0,0,0,0.25) 0%, rgba(18,43,9,0.15) 50%, rgba(0,0,0,0.30) 100%)",
+            "linear-gradient(135deg, rgba(14,35,18,0.18) 0%, rgba(29,64,23,0.08) 50%, rgba(10,25,14,0.22) 100%)",
         }}
       />
 
@@ -61,8 +61,7 @@ export default function CustomerLookup({ onCustomerFound }: Props) {
         {/* ── CỘT BÊN TRÁI (Nội dung Hình 1) ── */}
         <div className="lg:col-span-7 flex flex-col justify-start lg:justify-center text-white space-y-0 sm:space-y-6 pr-0 lg:pr-10">
           {/* Eyebrow tag nổi bật sắc nét — ẩn trên mobile để title lên cao hơn */}
-          <div className="hidden sm:inline-flex items-center gap-3 bg-[#316817]/90 backdrop-blur-md px-4 py-2 rounded-full border border-[#7AB463]/50 shadow-lg w-fit">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#E2BC7E] animate-pulse" />
+          <div className="hidden sm:inline-flex items-center bg-[#316817]/90 backdrop-blur-md px-4 py-2 rounded-full border border-[#7AB463]/50 shadow-lg w-fit">
             <span className="font-sans text-xs sm:text-sm tracking-[0.2em] uppercase text-white font-bold">
               Hệ thống đặt lịch ký HĐMB
             </span>
@@ -71,13 +70,13 @@ export default function CustomerLookup({ onCustomerFound }: Props) {
           {/* Tiêu đề chính H1 nổi bật với Text Shadow & Tương phản cao */}
           <div className="space-y-1 mt-0 sm:mt-[24px]">
             <h1
-              className="font-serif text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)] leading-none"
+              className="font-serif text-white drop-shadow-[0_2px_6px_rgba(18,40,14,0.25)] leading-none"
               style={{ fontSize: "clamp(2.5rem, 5vw, 4.375rem)", fontWeight: 500 }}
             >
               Chào mừng đến
             </h1>
             <h1
-              className="font-display text-[#D5EACB] drop-shadow-[0_6px_16px_rgba(0,0,0,0.9)] leading-tight tracking-wide whitespace-nowrap"
+              className="font-display text-[#D5EACB] drop-shadow-[0_2px_8px_rgba(18,40,14,0.3)] leading-tight tracking-wide whitespace-nowrap"
               style={{ fontSize: "clamp(4.5rem, 9.5vw, 8.75rem)", fontWeight: 700 }}
             >
               IKI VILLAGE
@@ -85,7 +84,7 @@ export default function CustomerLookup({ onCustomerFound }: Props) {
           </div>
 
           {/* Mô tả / Subtitle — mobile text-18px, desktop text-24px */}
-          <p className="font-sans text-[18px] sm:text-[24px] text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] max-w-xl leading-snug font-normal mt-1 sm:-mt-8">
+          <p className="font-serif text-[18px] sm:text-[24px] text-white drop-shadow-[0_1px_4px_rgba(18,40,14,0.2)] max-w-xl leading-snug font-normal mt-1 sm:-mt-8">
             Vui lòng cung cấp số điện thoại hoặc email để tra cứu thông tin và đặt lịch ký HĐMB.
           </p>
         </div>

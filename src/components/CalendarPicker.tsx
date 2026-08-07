@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, ChevronDown, CalendarDays, Clock, CheckCircle2, AlertCircle, User, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -277,6 +277,80 @@ function BookingSummaryBar({ customer }: { customer: Customer }) {
   )
 }
 
+/**
+ * The 12-month grid, shared by the desktop popover and the mobile sheet so the
+ * "which months are reachable" rule lives in exactly one place. Past months are
+ * disabled; everything from the current month onward is open.
+ */
+function MonthGrid({
+  viewMonth, year, todayRef, onPickMonth, onPickYear,
+}: {
+  viewMonth: { year: number; month: number }
+  year: number
+  todayRef: Date
+  onPickMonth: (month: number) => void
+  onPickYear: (year: number) => void
+}) {
+  const thisYear  = todayRef.getFullYear()
+  const thisMonth = todayRef.getMonth()
+  // Stepping back past the current year would only ever show disabled months.
+  const canGoPrevYear = year > thisYear
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-3">
+        <button
+          onClick={() => canGoPrevYear && onPickYear(year - 1)}
+          disabled={!canGoPrevYear}
+          aria-label="Năm trước"
+          className={cn("w-8 h-8 flex items-center justify-center rounded-lg transition-colors bg-transparent border-none",
+            canGoPrevYear ? "text-[#316817] hover:bg-[#F0F7EC] cursor-pointer" : "text-[#C4BCB0] cursor-not-allowed")}
+        >
+          <ChevronLeft size={16} />
+        </button>
+        <span className="font-sans text-base font-semibold text-[#2C2820] tabular-nums">{year}</span>
+        <button
+          onClick={() => onPickYear(year + 1)}
+          aria-label="Năm sau"
+          className="w-8 h-8 flex items-center justify-center rounded-lg text-[#316817] hover:bg-[#F0F7EC] transition-colors bg-transparent border-none cursor-pointer"
+        >
+          <ChevronRight size={16} />
+        </button>
+      </div>
+
+      <div className="grid grid-cols-3 sm:grid-cols-3 gap-2">
+        {VI_MONTH_NAMES.map((label, idx) => {
+          const isPast     = year < thisYear || (year === thisYear && idx < thisMonth)
+          const isViewing  = year === viewMonth.year && idx === viewMonth.month
+          const isThisMonth = year === thisYear && idx === thisMonth
+
+          return (
+            <button
+              key={label}
+              disabled={isPast}
+              onClick={() => onPickMonth(idx)}
+              aria-current={isViewing ? "true" : undefined}
+              className={cn(
+                "h-11 rounded-lg font-sans text-sm transition-colors border bg-transparent",
+                isViewing
+                  ? "bg-[#316817] border-[#316817] text-white font-semibold cursor-pointer"
+                  : isPast
+                    ? "border-[#E8E0D4] text-[#C4BCB0] cursor-not-allowed"
+                    : cn(
+                        "border-[#E0D8CC] text-[#2C2820] hover:border-[#316817] hover:bg-[#F0F7EC] cursor-pointer",
+                        isThisMonth && "border-[#AACF97] font-semibold",
+                      ),
+              )}
+            >
+              {label}
+            </button>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 function NoChainNotice({ n }: { n: number }) {
   return (
     <div className="flex items-start gap-2 px-3.5 py-2.5 rounded-xl border border-[#E8D9A8] bg-[#FDF8E8]">
@@ -309,6 +383,16 @@ export default function CalendarPicker({ customer, calendarDays, onTimeSelected,
   const [sheetOpen, setSheetOpen] = useState(false)
   // Set when the customer taps a slot that cannot start an n-slot chain.
   const [blockedInfo, setBlockedInfo] = useState<BlockedInfo | null>(null)
+  /* After a time is picked, the confirmation summary is brought into view and
+     focused so the customer is not left hunting for the next action — on
+     desktop it sits below a long slot list, on mobile below the fold. */
+  const summaryRef = useRef<HTMLDivElement | null>(null)
+  const mobileSummaryRef = useRef<HTMLButtonElement | null>(null)
+  // Month/year jump picker: a popover on desktop, a bottom sheet on mobile.
+  const [monthPickerOpen, setMonthPickerOpen] = useState(false)
+  // Year shown inside the picker, which can differ from the month being viewed
+  // while the customer browses forward without having committed to a month.
+  const [pickerYear, setPickerYear] = useState(viewMonth.year)
 
   useEffect(() => { onNeedDays?.(viewMonth.year, viewMonth.month) }, [viewMonth.year, viewMonth.month])
 
@@ -322,6 +406,55 @@ export default function CalendarPicker({ customer, calendarDays, onTimeSelected,
     window.addEventListener("keydown", onKey, true)
     return () => window.removeEventListener("keydown", onKey, true)
   }, [blockedInfo])
+
+  /* Move the customer to the confirmation summary once a time is chosen.
+     Runs on selectedStartIdx so re-picking a different time re-announces it.
+     The rAF waits for the row to actually be in the DOM: on mobile the sheet
+     closes in the same commit, so scrolling immediately would target a node
+     that is still behind the overlay. */
+  useEffect(() => {
+    if (selectedStartIdx === null) return
+
+    const id = requestAnimationFrame(() => {
+      const isMobile = window.matchMedia("(max-width: 1023px)").matches
+      const el = isMobile ? mobileSummaryRef.current : summaryRef.current
+      if (!el) return
+
+      // `center` keeps the summary clear of the sticky mobile bar, and on
+      // desktop brings the CTA sitting just below it into view too.
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      el.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" })
+      // preventScroll: the smooth scroll above owns the movement — letting
+      // focus scroll too would snap past it.
+      el.focus({ preventScroll: true })
+    })
+
+    return () => cancelAnimationFrame(id)
+  }, [selectedStartIdx])
+
+  /* Month picker: Esc closes it, and on mobile — where it renders as a sheet —
+     the page behind is frozen. On desktop it is an in-flow popover, so locking
+     scroll there would strand anyone mid-page. */
+  useEffect(() => {
+    if (!monthPickerOpen) return
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setMonthPickerOpen(false) }
+    window.addEventListener("keydown", onKey)
+
+    const mql = window.matchMedia("(max-width: 639px)")
+    const isMobile = mql.matches
+    const prev = document.body.style.overflow
+    if (isMobile) document.body.style.overflow = "hidden"
+    // Crossing the breakpoint swaps sheet for popover; close so the scroll lock
+    // cannot outlive the sheet that installed it.
+    const onBreakpoint = () => setMonthPickerOpen(false)
+    mql.addEventListener("change", onBreakpoint)
+
+    return () => {
+      if (isMobile) document.body.style.overflow = prev
+      window.removeEventListener("keydown", onKey)
+      mql.removeEventListener("change", onBreakpoint)
+    }
+  }, [monthPickerOpen])
 
   // While the sheet is up, freeze the page behind it and let Esc / Android back close it.
   useEffect(() => {
@@ -364,6 +497,20 @@ export default function CalendarPicker({ customer, calendarDays, onTimeSelected,
     })
     setSelectedDate(null)
     setSelectedStartIdx(null)
+  }
+
+  /* Opening always re-syncs the picker's year to the month on screen, so it
+     never reopens on wherever the customer browsed to and then abandoned. */
+  const openMonthPicker = () => {
+    setPickerYear(viewMonth.year)
+    setMonthPickerOpen(true)
+  }
+
+  const handlePickMonth = (month: number) => {
+    setViewMonth({ year: pickerYear, month })
+    setSelectedDate(null)
+    setSelectedStartIdx(null)
+    setMonthPickerOpen(false)
   }
 
   const dayData      = calendarDays.find((d) => d.date === selectedDate)
@@ -476,22 +623,60 @@ export default function CalendarPicker({ customer, calendarDays, onTimeSelected,
             <p className="font-sans text-xs font-semibold tracking-[0.12em] uppercase text-[#7A6E60] leading-none">1. Chọn ngày</p>
           </div>
 
-          <div className="border border-[#E0D8CC] bg-[#FAF7F2] rounded-2xl overflow-hidden shadow-sm">
+          {/* `relative` anchors the desktop month popover to this card. */}
+          <div className="relative border border-[#E0D8CC] bg-[#FAF7F2] rounded-2xl overflow-hidden shadow-sm">
             <div className="flex items-center justify-between px-4 py-3 border-b border-[#E0D8CC]"
               style={{ background: "linear-gradient(135deg,#1D400E 0%,#275413 100%)" }}>
               <button onClick={handlePrevMonth} disabled={isPrevMonthDisabled}
-                className={cn("w-7 h-7 flex items-center justify-center rounded-lg transition-colors",
+                aria-label="Tháng trước"
+                className={cn("w-7 h-7 flex items-center justify-center rounded-lg transition-colors shrink-0",
                   isPrevMonthDisabled ? "text-white/20 cursor-not-allowed" : "text-white/70 hover:text-[#E2BC7E] hover:bg-white/10")}>
                 <ChevronLeft size={16} />
               </button>
-              <div className="text-center">
-                <p className="font-sans text-base font-semibold text-[#E2BC7E] leading-none">{VI_MONTH_NAMES[viewMonth.month]}</p>
-                <p className="font-sans text-[15px] text-white/70 mt-[5px] tracking-wider">{viewMonth.year}</p>
-              </div>
-              <button onClick={handleNextMonth} className="w-7 h-7 flex items-center justify-center rounded-lg text-white/70 hover:text-[#E2BC7E] hover:bg-white/10 transition-colors">
+
+              {/* The label is the jump control: stepping a month at a time was
+                  the only way to move, so reaching a distant month meant
+                  clicking the arrow over and over. */}
+              <button
+                onClick={openMonthPicker}
+                aria-haspopup="dialog"
+                aria-expanded={monthPickerOpen}
+                className="flex items-center gap-2 px-3 py-1 rounded-lg hover:bg-white/10 transition-colors bg-transparent border-none cursor-pointer"
+              >
+                <span className="text-center">
+                  <span className="block font-sans text-base font-semibold text-[#E2BC7E] leading-none">{VI_MONTH_NAMES[viewMonth.month]}</span>
+                  <span className="block font-sans text-[15px] text-white/70 mt-[5px] tracking-wider">{viewMonth.year}</span>
+                </span>
+                <ChevronDown size={15} className={cn("text-white/70 transition-transform duration-200 shrink-0", monthPickerOpen && "rotate-180")} />
+              </button>
+
+              <button onClick={handleNextMonth}
+                aria-label="Tháng sau"
+                className="w-7 h-7 flex items-center justify-center rounded-lg text-white/70 hover:text-[#E2BC7E] hover:bg-white/10 transition-colors shrink-0">
                 <ChevronRight size={16} />
               </button>
             </div>
+
+            {/* Desktop: overlays the day grid rather than pushing it down, so
+                the card keeps its height and nothing below shifts. */}
+            {monthPickerOpen && (
+              <>
+                <div className="hidden sm:block absolute inset-0 z-20" onClick={() => setMonthPickerOpen(false)} />
+                <div
+                  className="hidden sm:block absolute left-3 right-3 top-[74px] z-30 rounded-xl border border-[#E0D8CC] bg-white p-4 shadow-[0_12px_32px_rgba(0,0,0,0.18)]"
+                  role="dialog"
+                  aria-label="Chọn tháng"
+                >
+                  <MonthGrid
+                    viewMonth={viewMonth}
+                    year={pickerYear}
+                    todayRef={todayRef}
+                    onPickMonth={handlePickMonth}
+                    onPickYear={setPickerYear}
+                  />
+                </div>
+              </>
+            )}
 
             <div className="grid grid-cols-7 border-b border-[#E0D8CC]">
               {DOW_HEADERS.map((h) => (
@@ -579,8 +764,8 @@ export default function CalendarPicker({ customer, calendarDays, onTimeSelected,
         ) : validIndices.length === 0 ? (
           <NoChainNotice n={n} />
         ) : selectedStartIdx !== null && selectedChain.length > 0 ? (
-          <button onClick={() => setSheetOpen(true)}
-            className="w-full text-left rounded-2xl border border-[#AACF97] bg-[#F0F7EC] px-4 py-3.5 flex items-center gap-3 active:bg-[#E4F0DC] transition-colors">
+          <button ref={mobileSummaryRef} onClick={() => setSheetOpen(true)}
+            className="w-full text-left rounded-2xl border border-[#AACF97] bg-[#F0F7EC] px-4 py-3.5 flex items-center gap-3 active:bg-[#E4F0DC] transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#316817] focus-visible:ring-offset-2">
             <div className="w-9 h-9 rounded-full bg-[#316817] flex items-center justify-center flex-shrink-0">
               <CheckCircle2 size={18} className="text-white" />
             </div>
@@ -610,7 +795,15 @@ export default function CalendarPicker({ customer, calendarDays, onTimeSelected,
       </div>
 
       {selectedStartIdx !== null && selectedChain.length > 0 && (
-        <div className="hidden lg:block mt-6 rounded-2xl border border-[#E0D8CC] bg-[#FAF7F2] px-5 py-4 shadow-sm">
+        <div
+          ref={summaryRef}
+          // tabIndex -1 makes this focusable programmatically without adding it
+          // to the tab order; the label gives screen readers something to read
+          // when focus lands here.
+          tabIndex={-1}
+          role="status"
+          aria-label="Khung giờ đã chọn"
+          className="hidden lg:block mt-6 rounded-2xl border border-[#E0D8CC] bg-[#FAF7F2] px-5 py-4 shadow-sm outline-none focus-visible:ring-2 focus-visible:ring-[#316817] focus-visible:ring-offset-2">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="space-y-1">
               <p className="font-sans text-xs font-semibold tracking-[0.14em] uppercase text-[#316817]">
@@ -741,6 +934,42 @@ export default function CalendarPicker({ customer, calendarDays, onTimeSelected,
             >
               Đã hiểu
             </Button>
+          </div>
+        </div>
+      )}
+
+      {/* ── Mobile month picker ──
+          A sheet rather than the desktop popover: the calendar card is too
+          narrow here for a 12-month grid, and sheets are already the pattern
+          this screen uses for the slot list and apartment details. */}
+      {monthPickerOpen && (
+        <div className="sm:hidden fixed inset-0 z-[60] flex items-end" role="dialog" aria-modal="true" aria-label="Chọn tháng">
+          <div className="sheet-overlay absolute inset-0 bg-black/50" onClick={() => setMonthPickerOpen(false)} />
+
+          <div className="sheet-panel relative w-full flex flex-col rounded-t-3xl bg-[#FAF7F2] shadow-[0_-8px_32px_rgba(0,0,0,0.18)]">
+            <div className="flex-shrink-0 pt-2.5 pb-3 px-4 border-b border-[#E0D8CC]">
+              <div className="w-10 h-1 rounded-full bg-[#D0C8BC] mx-auto mb-3" />
+              <div className="flex items-start justify-between gap-3">
+                <p className="font-sans text-lg font-semibold text-[#2C2820] leading-tight">Chọn tháng</p>
+                <button
+                  onClick={() => setMonthPickerOpen(false)}
+                  aria-label="Đóng"
+                  className="w-9 h-9 -mt-1 flex items-center justify-center rounded-full text-[#7A6E60] active:bg-[#E8E0D4] flex-shrink-0 bg-transparent border-none cursor-pointer"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+            </div>
+
+            <div className="px-4 pt-4 pb-[calc(2rem+env(safe-area-inset-bottom))]">
+              <MonthGrid
+                viewMonth={viewMonth}
+                year={pickerYear}
+                todayRef={todayRef}
+                onPickMonth={handlePickMonth}
+                onPickYear={setPickerYear}
+              />
+            </div>
           </div>
         </div>
       )}
