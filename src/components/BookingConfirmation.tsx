@@ -40,10 +40,9 @@ export default function BookingConfirmation({ booking, onConfirm, onBack }: Prop
     <div className="max-w-6xl mx-auto py-6 pb-32 lg:pb-6">
       <div className="flex items-start justify-between mb-6 sm:mb-8 gap-4 flex-wrap">
         <div className="space-y-1">
-          <p className="font-sans text-xs tracking-[0.18em] uppercase text-[#316817] font-semibold leading-none">Bước 4 — Xác nhận</p>
+          <p className="font-sans text-xs tracking-[0.18em] uppercase text-[#316817] font-semibold leading-none">Bước 3 — Xác nhận</p>
           <h2 className="font-serif text-2xl sm:text-4xl font-normal text-[#2C2820] leading-snug">Xác nhận đặt lịch</h2>
         </div>
-        <Button variant="ghost" size="sm" onClick={onBack} className="rounded-xl hidden lg:inline-flex"><ArrowLeft size={14} />Quay lại</Button>
       </div>
 
       {/* Hold timer: bare digits above the booking details at every width.
@@ -76,13 +75,10 @@ export default function BookingConfirmation({ booking, onConfirm, onBack }: Prop
               <div className="p-4 rounded-xl bg-[#F0F7EC] border border-[#AACF97] flex items-start sm:items-center justify-between gap-3">
                 <div className="space-y-1 min-w-0">
                   <p className="font-sans text-xs text-[#6B5F51] uppercase tracking-wider">Khách hàng</p>
-                  <p className="font-serif text-lg sm:text-xl font-normal text-[#2C2820] leading-snug py-0.5 truncate">{customer.name}</p>
-                  {/* Mobile: phone and email stack, since the dot-joined line overflows */}
-                  <div className="sm:hidden">
-                    <p className="font-sans text-xs text-[#7A6E60]">{customer.phone}</p>
-                    <p className="font-sans text-xs text-[#7A6E60] truncate">{customer.email}</p>
-                  </div>
-                  <p className="font-sans text-xs text-[#7A6E60] hidden sm:block">{customer.phone} · {customer.email}</p>
+                  <p className="font-sans text-lg sm:text-xl font-medium text-[#2C2820] leading-snug py-0.5 truncate">{customer.name}</p>
+                  {/* One line at every width, matching the calendar step's
+                      summary bar. Truncates instead of stacking. */}
+                  <p className="font-sans text-xs text-[#7A6E60] truncate">{customer.phone} · {customer.email}</p>
                 </div>
                 <Badge variant="outline" className="bg-white border-[#316817] text-[#316817] flex-shrink-0 whitespace-nowrap">{n} căn hộ</Badge>
               </div>
@@ -92,7 +88,7 @@ export default function BookingConfirmation({ booking, onConfirm, onBack }: Prop
                 {/* The arrow is an SVG, not "→": Pacific Standard has no
                     U+2192 glyph, so the character fell back to Times New Roman
                     and sat off the baseline of the numerals beside it. */}
-                <p className="font-serif text-xl sm:text-2xl font-bold text-[#316817] py-0.5 flex items-center gap-2">
+                <p className="font-sans text-xl sm:text-2xl font-bold text-[#316817] py-0.5 flex items-center gap-2">
                   <span>{selectedStartTime}</span>
                   <ArrowRight className="w-5 h-5 shrink-0" aria-label="đến" />
                   <span>{selectedEndTime}</span>

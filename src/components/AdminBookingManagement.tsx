@@ -37,13 +37,10 @@ export default function AdminBookingManagement({ records, onUpdateStatus, onBack
           <p className="font-sans text-xs tracking-[0.18em] uppercase text-[#316817] font-semibold leading-none">
             Bảng điều khiển Quản trị viên
           </p>
-          <h2 className="font-serif text-3xl font-medium text-[#2C2820]">
+          <h2 className="font-serif text-3xl font-medium text-[#2C2820] leading-snug">
             Quản lý yêu cầu đặt lịch bàn giao
           </h2>
         </div>
-        <Button variant="ghost" size="sm" onClick={onBack} className="rounded-xl">
-          <ArrowLeft size={14} /> Về trang cư dân
-        </Button>
       </div>
 
       {/* Stats bar */}

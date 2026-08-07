@@ -18,34 +18,29 @@ export default function ApartmentList({ customer, onProceed, onBack }: Props) {
   const n = customer.apartments.length
 
   return (
-    <div className="max-w-4xl mx-auto py-6 pb-28 sm:pb-6">
+    <div className="max-w-6xl mx-auto py-6 pb-28 sm:pb-6">
       {/* Page header */}
       <div className="flex items-start justify-between mb-8 gap-4 flex-wrap">
         <div className="space-y-1">
           <p className="font-sans text-xs tracking-[0.18em] uppercase text-[#316817] font-semibold leading-none">Bước 2 — Căn hộ</p>
-          <h2 className="font-serif text-2xl sm:text-3xl font-medium text-[#2C2820]">Danh sách căn hộ</h2>
+          <h2 className="font-serif text-2xl sm:text-3xl font-medium text-[#2C2820] leading-snug">Danh sách căn hộ</h2>
         </div>
-        <Button variant="ghost" size="sm" onClick={onBack} className="hidden sm:inline-flex"><ArrowLeft size={14} />Quay lại</Button>
       </div>
 
       {/* Customer banner — primary green */}
       <Card className="mb-6 overflow-hidden border-0 shadow-[0_4px_24px_rgba(49,104,23,0.15)] rounded-2xl">
         <div className="p-3 sm:p-5 flex items-center gap-3 sm:gap-4" style={{ background: "linear-gradient(135deg,#1D400E 0%,#275413 100%)" }}>
-          <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-[#B8965A] to-[#CDA85A] flex items-center justify-center flex-shrink-0 text-[#FAF7F2] font-serif text-lg sm:text-xl font-semibold shadow-md">
+          <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-[#B8965A] to-[#CDA85A] flex items-center justify-center flex-shrink-0 text-[#FAF7F2] font-sans text-lg sm:text-xl font-semibold shadow-md">
             {customer.name.charAt(0)}
           </div>
           <div className="flex-1 min-w-0 py-1 space-y-1">
-            <p className="font-serif text-lg sm:text-2xl text-white font-normal truncate leading-snug">{customer.name}</p>
-            {/* Mobile: phone and email stack, since the dot-joined line overflows */}
-            <div className="sm:hidden">
-              <p className="font-sans text-sm text-white/80">{customer.phone}</p>
-              <p className="font-sans text-sm text-white/80 truncate">{customer.email}</p>
-            </div>
-            <p className="font-sans text-sm text-white/80 pt-0.5 hidden sm:block">{customer.phone} · {customer.email}</p>
+            <p className="font-sans text-lg sm:text-2xl text-white font-normal truncate leading-snug">{customer.name}</p>
+            {/* One line at every width, matching the other steps. */}
+            <p className="font-sans text-sm text-white/80 pt-0.5 truncate">{customer.phone} · {customer.email}</p>
           </div>
           <div className="text-right flex-shrink-0">
             <p className="font-sans text-xs text-white/80 uppercase tracking-wider mb-0.5">Tổng căn</p>
-            <p className="font-serif text-3xl sm:text-4xl text-[#E2BC7E] font-semibold leading-none">{n}</p>
+            <p className="font-sans text-3xl sm:text-4xl text-[#E2BC7E] font-semibold leading-none">{n}</p>
           </div>
         </div>
       </Card>
@@ -63,7 +58,7 @@ export default function ApartmentList({ customer, onProceed, onBack }: Props) {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="font-sans text-xs text-[#6B5F51] tracking-wider uppercase">Căn {idx + 1}</p>
-                    <p className="font-serif text-lg font-semibold text-[#2C2820] leading-tight truncate">{apt.code}</p>
+                    <p className="font-sans text-lg font-semibold text-[#2C2820] leading-tight truncate">{apt.code}</p>
                   </div>
                   <Badge variant="muted" className="flex-shrink-0">{apt.type}</Badge>
                 </div>
@@ -87,12 +82,12 @@ export default function ApartmentList({ customer, onProceed, onBack }: Props) {
                 </div>
                 {/* Content */}
                 <div className="flex-1 flex items-center px-3 sm:px-5 py-3 sm:py-4 gap-3 sm:gap-4">
-                  <div className="font-serif text-2xl sm:text-3xl text-[#AACF97] font-light w-6 sm:w-8 flex-shrink-0 select-none leading-none">{idx + 1}</div>
+                  <div className="font-sans text-2xl sm:text-3xl text-[#AACF97] font-light w-6 sm:w-8 flex-shrink-0 select-none leading-none">{idx + 1}</div>
                   <div className="w-px self-stretch bg-[#E8E0D4]" />
                   <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-x-3 gap-y-2">
                     <div>
                       <p className="font-sans text-xs text-[#6B5F51] tracking-wider uppercase mb-0.5">Mã căn</p>
-                      <p className="font-serif text-base font-semibold text-[#2C2820]">{apt.code}</p>
+                      <p className="font-sans text-base font-semibold text-[#2C2820]">{apt.code}</p>
                     </div>
                     <div>
                       <p className="font-sans text-xs text-[#6B5F51] tracking-wider uppercase mb-0.5">Tháp / Tầng</p>
@@ -137,7 +132,7 @@ export default function ApartmentList({ customer, onProceed, onBack }: Props) {
             </div>
             {/* Big number is decorative — it repeats the sentence. Desktop only. */}
             <div className="hidden sm:block flex-shrink-0 text-center">
-              <p className="font-serif text-4xl text-[#316817] font-semibold leading-none">{n}</p>
+              <p className="font-sans text-4xl text-[#316817] font-semibold leading-none">{n}</p>
               <p className="font-sans text-xs text-[#5A7A50] uppercase tracking-wider mt-0.5">khung giờ</p>
             </div>
           </div>

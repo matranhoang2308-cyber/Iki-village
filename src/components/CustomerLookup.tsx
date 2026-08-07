@@ -64,7 +64,7 @@ export default function CustomerLookup({ onCustomerFound }: Props) {
           <div className="hidden sm:inline-flex items-center gap-3 bg-[#316817]/90 backdrop-blur-md px-4 py-2 rounded-full border border-[#7AB463]/50 shadow-lg w-fit">
             <span className="w-2.5 h-2.5 rounded-full bg-[#E2BC7E] animate-pulse" />
             <span className="font-sans text-xs sm:text-sm tracking-[0.2em] uppercase text-white font-bold">
-              Hệ thống đặt lịch bàn giao
+              Hệ thống đặt lịch ký HĐMB
             </span>
           </div>
 
@@ -77,15 +77,15 @@ export default function CustomerLookup({ onCustomerFound }: Props) {
               Chào mừng đến
             </h1>
             <h1
-              className="font-serif text-[#D5EACB] drop-shadow-[0_6px_16px_rgba(0,0,0,0.9)] leading-tight tracking-wide whitespace-nowrap"
-              style={{ fontSize: "clamp(4rem, 8vw, 7.5rem)", fontWeight: 700 }}
+              className="font-display text-[#D5EACB] drop-shadow-[0_6px_16px_rgba(0,0,0,0.9)] leading-tight tracking-wide whitespace-nowrap"
+              style={{ fontSize: "clamp(4.5rem, 9.5vw, 8.75rem)", fontWeight: 700 }}
             >
-              IKI Village
+              IKI VILLAGE
             </h1>
           </div>
 
-          {/* Mô tả / Subtitle — mobile cách title 16px, desktop giữ 20px */}
-          <p className="font-sans text-[18px] sm:text-[28px] text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] max-w-xl leading-snug font-normal mt-2 sm:-mt-3">
+          {/* Mô tả / Subtitle — mobile text-18px, desktop text-24px */}
+          <p className="font-sans text-[18px] sm:text-[24px] text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] max-w-xl leading-snug font-normal mt-1 sm:-mt-8">
             Vui lòng cung cấp số điện thoại hoặc email để tra cứu thông tin và đặt lịch ký HĐMB.
           </p>
         </div>
@@ -100,7 +100,7 @@ export default function CustomerLookup({ onCustomerFound }: Props) {
                 Tra cứu thông tin
               </h2>
               <p className="font-sans text-sm text-[#6B5F51] mt-0.5">
-                Nhập thông tin của bạn đã đăng ký
+                Vui lòng nhập thông tin của bạn
               </p>
             </div>
 

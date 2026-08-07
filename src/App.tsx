@@ -2,7 +2,6 @@ import { useState, useCallback } from "react"
 import { Check } from "lucide-react"
 import { Separator } from "@/components/ui/separator"
 import CustomerLookup from "@/components/CustomerLookup"
-import ApartmentList from "@/components/ApartmentList"
 import CalendarPicker from "@/components/CalendarPicker"
 import BookingConfirmation from "@/components/BookingConfirmation"
 import BookingSuccess from "@/components/BookingSuccess"
@@ -14,7 +13,7 @@ import {
 } from "@/data/mockData"
 import { cn } from "@/lib/utils"
 
-export type AppStep = "lookup" | "existing" | "apartments" | "calendar" | "confirmation" | "success" | "admin"
+export type AppStep = "lookup" | "existing" | "calendar" | "confirmation" | "success" | "admin"
 export type SubmitStatus = "idle" | "checking" | "conflict" | "done"
 
 export interface SlotRef {
@@ -59,9 +58,10 @@ const EMPTY_BOOKING: BookingState = {
   conflictMessage: null,
 }
 
+/* Four steps: the old "Căn hộ" page is gone, folded into the calendar step as
+   a summary bar so the apartment context travels with the booking decision. */
 const STEPS: { key: AppStep; label: string }[] = [
   { key: "lookup",       label: "Tra cứu" },
-  { key: "apartments",   label: "Căn hộ" },
   { key: "calendar",     label: "Lịch hẹn" },
   { key: "confirmation", label: "Xác nhận" },
   { key: "success",      label: "Hoàn tất" },
@@ -103,10 +103,9 @@ export default function App() {
     }
 
     setBooking((b) => ({ ...b, customer }))
-    setStep("apartments")
+    // Straight to the calendar: the apartment list is a summary there now.
+    setStep("calendar")
   }
-
-  const handleProceedToCalendar = () => setStep("calendar")
 
   const handleTimeSelected = (
     date: string,
@@ -307,7 +306,7 @@ export default function App() {
           WebkitBackdropFilter: "blur(12px) saturate(140%)",
         }}
       >
-        <div className="max-w-5xl mx-auto px-4 sm:px-5 h-16 flex items-center justify-between gap-3 sm:gap-4">
+        <div className="max-w-6xl mx-auto px-4 sm:px-5 h-16 flex items-center justify-between gap-3 sm:gap-4">
           <button onClick={handleReset} className="flex items-center gap-3 focus-visible:outline-none group text-left">
             <img
               src="/iki-logo.png"
@@ -379,7 +378,7 @@ export default function App() {
       {/* ── Main ── */}
       {/* px-4 (16px) is the single source of the page gutter on mobile — child
           screens must not add their own, or it compounds to 32px. */}
-      <main className={cn("flex-1 flex flex-col", isFullBleed ? "" : "max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-10 md:py-14 pt-20")}>
+      <main className={cn("flex-1 flex flex-col", isFullBleed ? "" : "max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-10 md:pb-14 pt-20 md:pt-[115px]")}>
         {step === "lookup" && (
           <div className="flex-1 animate-[fadeIn_0.5s_ease]">
             <CustomerLookup onCustomerFound={handleCustomerFound} />
@@ -397,16 +396,6 @@ export default function App() {
           </div>
         )}
 
-        {step === "apartments" && booking.customer && (
-          <div className="animate-[fadeIn_0.4s_ease]">
-            <ApartmentList
-              customer={booking.customer}
-              onProceed={handleProceedToCalendar}
-              onBack={handleReset}
-            />
-          </div>
-        )}
-
         {step === "calendar" && booking.customer && (
           <div className="animate-[fadeIn_0.4s_ease]">
             <CalendarPicker
@@ -414,7 +403,9 @@ export default function App() {
               calendarDays={calendarDays}
               onTimeSelected={handleTimeSelected}
               onNeedDays={handleNeedDays}
-              onBack={() => setStep("apartments")}
+              // Back from the calendar now returns to lookup — there is no
+              // apartments step in between any more.
+              onBack={handleReset}
             />
           </div>
         )}
@@ -456,10 +447,10 @@ export default function App() {
 
       {step !== "lookup" && (
         <footer className="border-t border-[#E0D8CC] py-4 px-5 mt-8 hidden sm:block">
-          <div className="max-w-5xl mx-auto flex items-center justify-between">
+          <div className="max-w-6xl mx-auto flex items-center justify-between">
             <p className="font-sans text-xs text-[#6B5F51] tracking-wide">© 2025 IKI Village. All rights reserved.</p>
             <Separator orientation="vertical" className="h-3 mx-3" />
-            <p className="font-sans text-xs text-[#6B5F51]">Hệ thống đặt lịch bàn giao căn hộ</p>
+            <p className="font-sans text-xs text-[#6B5F51]">Hệ thống đặt lịch ký HĐMB căn hộ</p>
           </div>
         </footer>
       )}

@@ -31,7 +31,7 @@ function FlipUnit({ value, label, bare }: { value: number; label: string; bare?:
       >
         <span
           key={text}
-          className="flip-digit absolute inset-0 flex items-center justify-center font-serif text-2xl sm:text-3xl font-bold text-[#FAF7F2] leading-none [text-shadow:0_1px_2px_rgba(0,0,0,0.3)]"
+          className="flip-digit absolute inset-0 flex items-center justify-center font-sans text-2xl sm:text-3xl font-bold text-[#FAF7F2] leading-none [text-shadow:0_1px_2px_rgba(0,0,0,0.3)]"
         >
           {text}
         </span>
@@ -54,8 +54,8 @@ function Separator({ bare }: { bare?: boolean }) {
     <span
       className={
         bare
-          ? "font-serif text-xl font-bold text-[#316817] mx-0.5 pb-5"
-          : "font-serif text-xl sm:text-2xl font-bold text-[#E2BC7E] mx-0.5 pb-6"
+          ? "font-sans text-xl font-bold text-[#316817] mx-0.5 pb-5"
+          : "font-sans text-xl sm:text-2xl font-bold text-[#E2BC7E] mx-0.5 pb-6"
       }
     >
       :

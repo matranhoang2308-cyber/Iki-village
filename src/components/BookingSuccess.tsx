@@ -43,7 +43,7 @@ export default function BookingSuccess({ booking, onNewBooking, onReschedule }: 
         <div className="p-4 bg-gradient-to-r from-[#1D400E] to-[#316817] text-white flex items-center justify-between">
           <div>
             <p className="font-sans text-xs text-white/85 uppercase tracking-widest">Mã đặt lịch</p>
-            <p className="font-serif text-xl font-bold">{bookingId}</p>
+            <p className="font-sans text-xl font-bold">{bookingId}</p>
           </div>
           <Badge variant="gold">PENDING</Badge>
         </div>

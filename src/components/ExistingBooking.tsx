@@ -60,7 +60,7 @@ export default function ExistingBooking({ booking, status, onReschedule, onBack 
         <div className="p-4 bg-gradient-to-r from-[#1D400E] to-[#316817] text-white flex items-center justify-between gap-3">
           <div className="min-w-0">
             <p className="font-sans text-xs text-white/85 uppercase tracking-widest">Mã đặt lịch</p>
-            <p className="font-serif text-xl font-bold truncate">{bookingId}</p>
+            <p className="font-sans text-xl font-bold truncate">{bookingId}</p>
           </div>
           <Badge variant="gold" className="flex-shrink-0">{status}</Badge>
         </div>

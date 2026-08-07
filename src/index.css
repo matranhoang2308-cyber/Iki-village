@@ -1,7 +1,10 @@
 @import 'tailwindcss';
 
 /* ---------------------------------------------------------------
-   Pacific Standard — headings (h2, section titles)
+   Pacific Standard — display face, used only for the "IKI VILLAGE"
+   wordmark. Kept out of --font-serif so ordinary headings stay on
+   Playfair; it has no U+2192 and only 395 glyphs, so it is not a
+   safe general-purpose text font.
    --------------------------------------------------------------- */
 @font-face {
   font-family: 'Pacific Standard';
@@ -19,81 +22,42 @@
 }
 
 /* ---------------------------------------------------------------
-   Myriad Pro — body text
+   Playfair Display — headings. Variable across wght 400–900, so one
+   file covers every weight the UI asks for.
    --------------------------------------------------------------- */
 @font-face {
-  font-family: 'Myriad Pro';
-  src: url('/fonts/MyriadPro-Light.otf') format('opentype');
-  font-weight: 200 300;
+  font-family: 'Playfair Display';
+  src: url('/fonts/PlayfairDisplay-Variable.ttf') format('truetype-variations');
+  font-weight: 400 900;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'Myriad Pro';
-  src: url('/fonts/MyriadPro-Regular.otf') format('opentype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Myriad Pro';
-  src: url('/fonts/MyriadPro-Semibold.otf') format('opentype');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Myriad Pro';
-  src: url('/fonts/MyriadPro-SemiboldIt.otf') format('opentype');
-  font-weight: 600;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Myriad Pro';
-  src: url('/fonts/MyriadPro-Bold.otf') format('opentype');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Myriad Pro';
-  src: url('/fonts/MyriadPro-BoldIt.otf') format('opentype');
-  font-weight: 700;
+  font-family: 'Playfair Display';
+  src: url('/fonts/PlayfairDisplay-Italic-Variable.ttf') format('truetype-variations');
+  font-weight: 400 900;
   font-style: italic;
   font-display: swap;
 }
 
 /* ---------------------------------------------------------------
-   Myriad Pro Condensed — sub-headings (h3) + body per style guide.
-   No Light Condensed cut exists, so weights 200–400 all resolve to
-   the regular condensed face.
+   Roboto — body text. Two axes: wght 100–900 and wdth 75–100, so the
+   condensed cut comes from the same file via font-stretch rather
+   than a separate family.
    --------------------------------------------------------------- */
 @font-face {
-  font-family: 'Myriad Pro Condensed';
-  src: url('/fonts/MyriadPro-Cond.otf') format('opentype');
-  font-weight: 200 400;
+  font-family: 'Roboto';
+  src: url('/fonts/Roboto-Variable.ttf') format('truetype-variations');
+  font-weight: 100 900;
+  font-stretch: 75% 100%;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'Myriad Pro Condensed';
-  src: url('/fonts/MyriadPro-CondIt.otf') format('opentype');
-  font-weight: 200 400;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Myriad Pro Condensed';
-  src: url('/fonts/MyriadPro-BoldCond.otf') format('opentype');
-  font-weight: 600 700;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Myriad Pro Condensed';
-  src: url('/fonts/MyriadPro-BoldCondIt.otf') format('opentype');
-  font-weight: 600 700;
+  font-family: 'Roboto';
+  src: url('/fonts/Roboto-Italic-Variable.ttf') format('truetype-variations');
+  font-weight: 100 900;
+  font-stretch: 75% 100%;
   font-style: italic;
   font-display: swap;
 }
@@ -137,10 +101,11 @@
   /* Status */
   --color-error:          #C4714A;
 
-  --font-serif: 'Pacific Standard', 'Times New Roman', serif;
-  --font-sans:  'Myriad Pro Condensed', 'Myriad Pro', 'Segoe UI', system-ui, sans-serif;
-  --font-cond:  'Myriad Pro Condensed', 'Segoe UI', sans-serif;
-  --font-wide:  'Myriad Pro', 'Segoe UI', system-ui, sans-serif;
+  --font-display: 'Pacific Standard', 'Playfair Display', Georgia, serif;
+  --font-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-sans:  'Roboto', 'Segoe UI', system-ui, sans-serif;
+  --font-cond:  'Roboto', 'Segoe UI', sans-serif;
+  --font-wide:  'Roboto', 'Segoe UI', system-ui, sans-serif;
 
   /* Brand text colors from the IKI Village style guide */
   --color-heading-brown: rgb(177, 125, 89);
@@ -152,7 +117,7 @@
 html, body { margin: 0; padding: 0; }
 
 body {
-  font-family: 'Myriad Pro Condensed', 'Myriad Pro', 'Segoe UI', system-ui, sans-serif;
+  font-family: 'Roboto', 'Segoe UI', system-ui, sans-serif;
   background-color: #F5F0E8;
   color: #2C2820;
   -webkit-font-smoothing: antialiased;
@@ -164,32 +129,26 @@ body {
 ::-webkit-scrollbar-thumb { background: #316817 40; border-radius: 2px; }
 ::-webkit-scrollbar-thumb:hover { background: #316817 80; }
 
-.font-serif { font-family: 'Pacific Standard', 'Times New Roman', serif; }
-.font-sans  { font-family: 'Myriad Pro Condensed', 'Myriad Pro', 'Segoe UI', system-ui, sans-serif; }
-.font-cond  { font-family: 'Myriad Pro Condensed', 'Segoe UI', sans-serif; }
-.font-wide  { font-family: 'Myriad Pro', 'Segoe UI', system-ui, sans-serif; }
+/* Wordmark only — see the @font-face note above. */
+.font-display { font-family: 'Pacific Standard', 'Playfair Display', Georgia, serif; }
+.font-serif { font-family: 'Playfair Display', Georgia, 'Times New Roman', serif; }
+.font-sans  { font-family: 'Roboto', 'Segoe UI', system-ui, sans-serif; }
+/* Condensed comes from Roboto's wdth axis, not a separate family. */
+.font-cond  { font-family: 'Roboto', 'Segoe UI', sans-serif; font-stretch: 75%; }
+.font-wide  { font-family: 'Roboto', 'Segoe UI', system-ui, sans-serif; font-stretch: 100%; }
 
 /* Optical centring for icon + text rows.
-   Myriad Pro leaves 76/1000em above the cap height but 250/1000em below the
-   baseline. `flex items-center` centres that *box*, so caps-only labels land
-   ~0.087em low next to an icon — visible as the icon "floating" above the
-   text. Trimming the half-leading with negative margins makes the box hug the
-   glyphs, so centring the box centres what you actually see.
-   Apply to the <span> holding the label, not to the flex container. */
+   Myriad Pro sat 0.087em low inside its own line box, so caps-only labels
+   needed negative margins to look centred beside an icon. Roboto's box is
+   near-symmetric — it is off by only 0.0137em, roughly 0.2px at 14px — so the
+   correction is no longer warranted and applying the old one would now push
+   labels visibly high. The class is kept as a no-op so call sites documenting
+   "this label is optically centred" stay meaningful; if a future font needs
+   compensation again, put it here rather than in the components. */
 .optical-center {
   display: block;
   line-height: 1;
 }
-.optical-center::before,
-.optical-center::after {
-  content: "";
-  display: block;
-  height: 0;
-  width: 0;
-}
-/* (750 - 674)/1000 above caps; 250/1000 below baseline */
-.optical-center::before { margin-top: -0.076em; }
-.optical-center::after  { margin-bottom: -0.25em; }
 
 /* Animations */
 @keyframes fadeIn  { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
