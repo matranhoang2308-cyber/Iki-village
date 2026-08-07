@@ -9,9 +9,9 @@ const VI_DAYS   = ["Chủ nhật","Thứ hai","Thứ ba","Thứ tư","Thứ năm
 const VI_MONTHS = ["tháng 1","tháng 2","tháng 3","tháng 4","tháng 5","tháng 6","tháng 7","tháng 8","tháng 9","tháng 10","tháng 11","tháng 12"]
 
 const STATUS_LABEL: Record<BookingRecord["status"], string> = {
-  PENDING:  "PENDING — Chờ xác duyệt",
-  APPROVED: "APPROVED — Đã xác duyệt",
-  REJECTED: "REJECTED — Đã từ chối",
+  PENDING:  "Đã xác nhận",
+  APPROVED: "Đã xác nhận",
+  REJECTED: "Đã huỷ",
 }
 
 interface Props {
@@ -31,9 +31,10 @@ export default function ExistingBooking({ booking, status, onReschedule, onBack 
   const dateLabel = `${VI_DAYS[d.getDay()]}, ${d.getDate()} ${VI_MONTHS[d.getMonth()]} ${d.getFullYear()}`
   const n         = customer.apartments.length
 
-  // An approved booking has been confirmed by staff — self-service changes to it
-  // would silently invalidate that approval, so route the customer to hotline.
-  const canReschedule = status === "PENDING"
+  // Approval is automatic now, so it no longer means "staff have committed to
+  // this slot" — gating self-service on it would send every customer to the
+  // hotline. Only a rejected booking is not reschedulable from here.
+  const canReschedule = status !== "REJECTED"
 
   return (
     <div className="max-w-xl mx-auto py-8 pb-28 sm:pb-8">
@@ -44,7 +45,7 @@ export default function ExistingBooking({ booking, status, onReschedule, onBack 
           </div>
         </div>
 
-        <Badge variant={status === "APPROVED" ? "success" : "pending"} className="mb-3 px-3 py-1 text-xs">
+        <Badge variant={status === "REJECTED" ? "muted" : "success"} className="mb-3 px-3 py-1 text-xs">
           {STATUS_LABEL[status]}
         </Badge>
 
@@ -96,7 +97,7 @@ export default function ExistingBooking({ booking, status, onReschedule, onBack 
         <div className="flex items-start gap-2.5 p-3.5 rounded-xl border border-[#E8D9A8] bg-[#FDF8E8] mb-4">
           <Info size={16} className="text-[#9A7B24] mt-0.5 flex-shrink-0" />
           <p className="font-sans text-[13px] text-[#6B5F51] leading-relaxed">
-            Lịch hẹn đã được xác duyệt nên không thể tự đổi trực tuyến. Vui lòng gọi{" "}
+            Lịch hẹn này đã bị huỷ nên không thể đổi trực tuyến. Vui lòng gọi{" "}
             <a href="tel:19001234" className="text-[#B8965A] font-semibold">1900 1234</a> để được hỗ trợ.
           </p>
         </div>

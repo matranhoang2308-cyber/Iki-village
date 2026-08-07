@@ -124,10 +124,34 @@ body {
 }
 
 /* Scrollbar */
+/* The alpha suffixes here used to be written "#316817 40" — the space made the
+   declaration invalid, so the thumb fell back to transparent and the bar was
+   effectively invisible. */
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #316817 40; border-radius: 2px; }
-::-webkit-scrollbar-thumb:hover { background: #316817 80; }
+::-webkit-scrollbar-thumb { background: #31681740; border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: #31681780; }
+
+/* Slot list: a wider, always-visible bar. The list is a scroll region sitting
+   inside a normal page, so without a persistent bar there is nothing to say
+   more times exist below the fold. Neutral greys, not brand green — the bar is
+   a navigation affordance and should not read as selectable content. */
+.slot-scroll {
+  scrollbar-width: thin;                      /* Firefox */
+  scrollbar-color: #DED6C9 #F4EFE6;
+}
+.slot-scroll::-webkit-scrollbar { width: 8px; }
+.slot-scroll::-webkit-scrollbar-track {
+  background: #F4EFE6;
+  border-radius: 4px;
+}
+.slot-scroll::-webkit-scrollbar-thumb {
+  background: #DED6C9;
+  border-radius: 4px;
+  border: 2px solid #F4EFE6;                  /* inset so the thumb reads slimmer */
+  background-clip: padding-box;
+}
+.slot-scroll::-webkit-scrollbar-thumb:hover { background: #C4BCB0; }
 
 /* Wordmark only — see the @font-face note above. */
 .font-display { font-family: 'Pacific Standard', 'Playfair Display', Georgia, serif; }

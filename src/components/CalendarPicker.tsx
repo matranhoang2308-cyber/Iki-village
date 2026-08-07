@@ -551,7 +551,9 @@ export default function CalendarPicker({ customer, calendarDays, onTimeSelected,
           {selectedDate && dayData ? (
             <div className="space-y-2">
               {validIndices.length === 0 && <NoChainNotice n={n} />}
-              <div className="space-y-1.5 max-h-[470px] overflow-y-auto pr-1">
+              {/* pr-2.5 keeps the rows clear of the 8px bar instead of letting
+                  it overlap their right edge. */}
+              <div className="slot-scroll space-y-1.5 max-h-[470px] overflow-y-auto pr-2.5">
                 {slotRows}
               </div>
             </div>
@@ -691,7 +693,7 @@ export default function CalendarPicker({ customer, calendarDays, onTimeSelected,
             </div>
 
             {/* Slot list — the only scrolling region */}
-            <div className="flex-1 overflow-y-auto overscroll-contain px-4 py-3 space-y-1.5 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
+            <div className="slot-scroll flex-1 overflow-y-auto overscroll-contain px-4 py-3 space-y-1.5 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
               {validIndices.length === 0 && <NoChainNotice n={n} />}
               {slotRows}
             </div>

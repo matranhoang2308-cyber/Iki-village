@@ -32,11 +32,11 @@ export default function BookingSuccess({ booking, onNewBooking, onReschedule }: 
         </div>
       </div>
 
-      <Badge variant="pending" className="mb-3 px-3 py-1 text-xs">PENDING — Chờ xác duyệt</Badge>
+      <Badge variant="success" className="mb-3 px-3 py-1 text-xs">Đã xác nhận</Badge>
 
       <h2 className="font-serif text-2xl sm:text-4xl font-normal text-[#2C2820] mb-3 leading-snug py-1">Đặt lịch thành công!</h2>
       <p className="font-sans text-xs sm:text-base text-[#7A6E60] mb-6 leading-relaxed">
-        Quản trị viên sẽ xác duyệt và liên hệ với quý khách trong thời gian sớm nhất.
+        Lịch hẹn của quý khách đã được xác nhận. Vui lòng đến đúng khung giờ đã đặt.
       </p>
 
       <Card className="text-left mb-6 rounded-2xl border-[#E0D8CC] overflow-hidden shadow-sm">
@@ -45,7 +45,7 @@ export default function BookingSuccess({ booking, onNewBooking, onReschedule }: 
             <p className="font-sans text-xs text-white/85 uppercase tracking-widest">Mã đặt lịch</p>
             <p className="font-sans text-xl font-bold">{bookingId}</p>
           </div>
-          <Badge variant="gold">PENDING</Badge>
+          <Badge variant="gold">ĐÃ XÁC NHẬN</Badge>
         </div>
         <CardContent className="p-5 space-y-3">
           <div className="flex justify-between items-baseline gap-3 text-sm font-sans">

@@ -8,7 +8,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
 import { Customer, CUSTOMERS } from "@/data/mockData"
 
-const HERO_IMG    = "https://images.unsplash.com/photo-1776361984975-84bbbb539f80?w=1400&h=900&fit=crop&auto=format"
+const HERO_IMG    = "/hero-bg.jpg"
 const INTERIOR_IMG = "https://images.unsplash.com/photo-1757924461488-ef9ad0670978?w=400&h=300&fit=crop&auto=format"
 const BUILDING_IMG = "https://images.unsplash.com/photo-1702902111874-8181f1e36269?w=400&h=300&fit=crop&auto=format"
 
